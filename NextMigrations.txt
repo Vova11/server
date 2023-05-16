@@ -1,0 +1,31 @@
+npx sequelize-cli model:generate --name Product --attributes name:string,description:string,price:decimal
+
+npx sequelize-cli model:generate --name ProductColour --attributes productId:integer,colourId:integer
+
+npx sequelize-cli model:generate --name ProductSize --attributes productId:integer,sizeId:integer
+
+
+// in models/Product.js
+
+class Product extends Model {
+  static associate(models) {
+    Product.belongsToMany(models.Colour, { through: models.ProductColour, foreignKey: 'productId', as: 'colours' });
+    Product.belongsToMany(models.Size, { through: models.ProductSize, foreignKey: 'productId', as: 'sizes' });
+  }
+}
+
+// in models/Colour.js
+
+class Colour extends Model {
+  static associate(models) {
+    Colour.belongsToMany(models.Product, { through: models.ProductColour, foreignKey: 'colourId', as: 'products' });
+  }
+}
+
+// in models/Size.js
+
+class Size extends Model {
+  static associate(models) {
+    Size.belongsToMany(models.Product, { through: models.ProductSize, foreignKey: 'sizeId', as: 'products' });
+  }
+}
