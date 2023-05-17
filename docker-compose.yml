@@ -1,0 +1,155 @@
+version: '3.9'
+networks:
+  web_server:
+services:
+  server:
+    container_name: api
+    build: .
+    env_file:
+      - .env.production
+    ports:
+      - 4646:8976
+    networks:
+      - web_server
+    command: npm start
+    environment:
+      LOG_LEVEL: debug
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: db
+      NODE_ENV: ${NODE_ENV}
+      PORT: 8976
+    entrypoint:
+      - ./startup.sh
+    depends_on:
+      - db
+    # volumes:
+    #   - app_data:/app/src
+  # app:
+  # REACT
+  db:
+    image: postgres
+    networks:
+      - web_server
+    env_file:
+      - .env.production
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+# app_data:
+# version: "3.8"
+# services:
+#   server:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     env_file:
+#       - .env.production
+#     ports:
+#       - "8080:3000"
+#     environment:
+#       # Debug
+#       LOG_LEVEL: debug
+#       DB_HOST: db
+#       DB_PORT: 5432
+#       DB_NAME: mydatabase
+#       DB_USER: myuser
+#       DB_PASSWORD: mypassword
+#     volumes:
+#       - app_data:/app/src
+#   db:
+#     image: postgres
+#     ports:
+#       - "35432:5432"
+#     environment:
+#       POSTGRES_DB: mydatabase
+#       POSTGRES_USER: myuser
+#       POSTGRES_PASSWORD: mypassword
+#     volumes:
+#       - db_data:/var/lib/postgresql/data
+# volumes:
+#   db_data:
+#   app_data:
+
+# version: "3"
+# services:
+#   api:
+#     container_name: node_api
+#     build: .
+
+#     ports:
+#     - 8080:8080
+#     depends_on:
+#         - db
+#     restart: on-failure
+#     volumes:
+#       - ./:/app/src
+#     command: sh -c "cd src && npx sequelize db:migrate --config config/config.js && npm run start"
+#     environment:
+#       # Port
+#       PORT: 8080
+
+#       # Debug
+#       LOG_LEVEL: debug
+
+#       DB_USER: postgres
+#       DB_PASSWORD: root
+#       DB_NAME: mydb
+#       DB_HOST: db
+#       DB_PORT: 5432
+#       NODE_ENV: production
+
+#   db:
+#     image: postgres
+#     ports:
+#       - "35432:5432"
+#     environment:
+#       - POSTGRES_HOST_AUTH_METHOD=trust
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD=root
+#       - POSTGRES_DB=mydb
+#     volumes:
+#       - db_data:/var/lib/postgresql/data
+
+# volumes:
+#   db_data:
+#   app_data:
+
+# # docker-compose.yml
+# version: "3"
+# services:
+#   app:
+#     build: .
+#     depends_on:
+#       - db
+#     links:
+#       - db
+#     environment:
+#       PORT: 3000
+#     ports:
+#       - "8080:3000"
+#     volumes:
+#       - app_data:/usr/src/app/data
+
+#   db:
+#     image: postgres
+#     ports:
+#       - "35432:5432"
+#     environment:
+#       - POSTGRES_HOST_AUTH_METHOD=trust
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD=postgres
+#       - POSTGRES_DB=postgres
+#     volumes:
+#       - db_data:/var/lib/postgresql/data
+
+# volumes:
+#   db_data:
+#   app_data:

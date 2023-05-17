@@ -4,9 +4,14 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "node index.js",
 		"dev": "NODE_ENV=development nodemon index.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"sequelize": "sequelize db:migrate:undo:all && sequelize db:migrate",
+		"start": "NODE_ENV=production node index.js",
+		"migrate": "NODE_ENV=production sequelize db:migrate:status && sequelize db:migrate",
+		"migration_dev": "NODE_ENV=development sequelize db:migrate:undo:all && sequelize db:migrate",
+		"migration_test": "NODE_ENV=test sequelize db:migrate:undo:all && sequelize db:migrate",
+		"migrate_down": "NODE_ENV=production sequelize db:migrate:undo:all && sequelize db:migrate",
+		"test": "NODE_ENV=test jest"
 	},
 	"keywords": [],
 	"author": "",
