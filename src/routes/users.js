@@ -25,16 +25,4 @@ router
 	.patch(authenticateUser, update)
 	.delete(authenticateUser, deleteUser);
 
-// router.route('/').get([authenticateUser, authorizePermissions('admin')], index);
-
-// router.route('/showMe').get([authenticateUser], showCurrentUser);
-
-// router.route('/updatePassword').patch([authenticateUser], updatePassword);
-
-// router
-// 	.route('/:id')
-// 	.get(authenticateUser, show)
-// 	.patch(authenticateUser, update)
-// 	.delete(authenticateUser, deleteUser);
-
 module.exports = router;

@@ -12,7 +12,7 @@ const {
 const index = async (req, res) => {
 	const users = await User.findAll({
 		where: {
-			role: 'user',
+			role: 'admin',
 		},
 		attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
 	});
@@ -76,12 +76,12 @@ const updatePassword = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-	// const { id } = req.params;
-	// const deleted = await User.destroy({ where: { id } });
-	// if (!deleted) {
-	//   throw new BadRequest('User not found');
-	// }
-	// return res.status(204).send();
+	const { id } = req.params;
+	const deleted = await User.destroy({ where: { id } });
+	if (!deleted) {
+		throw new BadRequest('User not found');
+	}
+	return res.status(204).send();
 };
 
 module.exports = {
