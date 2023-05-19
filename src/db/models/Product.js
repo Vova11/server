@@ -31,6 +31,12 @@ module.exports = (sequelize, DataTypes) => {
 				otherKey: 'sizeId',
 				as: 'product_sizes',
 			});
+
+			Product.belongsTo(models.User, {
+				foreignKey: 'userId',
+				as: 'user',
+				allowNull: true,
+			});
 		}
 	}
 	Product.init(
@@ -39,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
 			description: DataTypes.TEXT,
 			price: DataTypes.DECIMAL,
 			featured: DataTypes.BOOLEAN,
-			inventory: DataTypes.INTEGER,
+			inventory: DataTypes.INTEGER, // DELETE THIS ONE
 			published: DataTypes.BOOLEAN,
 			freeShipping: DataTypes.BOOLEAN,
 		},

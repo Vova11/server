@@ -2,12 +2,10 @@
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.addColumn('ProductVariants', 'sizeId', {
+		await queryInterface.addColumn('Products', 'userId', {
 			type: Sequelize.INTEGER,
-			allowNull: false,
-			defaultValue: 0, // Set a default value here
 			references: {
-				model: 'Sizes',
+				model: 'Users',
 				key: 'id',
 			},
 			onUpdate: 'CASCADE',
@@ -16,6 +14,6 @@ module.exports = {
 	},
 
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.removeColumn('ProductVariants', 'sizeId');
+		await queryInterface.removeColumn('Products', 'userId');
 	},
 };
