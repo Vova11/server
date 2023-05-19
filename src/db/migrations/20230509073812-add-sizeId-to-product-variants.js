@@ -4,8 +4,6 @@ module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		await queryInterface.addColumn('ProductVariants', 'sizeId', {
 			type: Sequelize.INTEGER,
-			allowNull: false,
-			defaultValue: 0, // Set a default value here
 			references: {
 				model: 'Sizes',
 				key: 'id',

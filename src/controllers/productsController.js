@@ -96,9 +96,6 @@ const updateProduct = async (req, res) => {
 	const variants = req.body.variants;
 	const images = req.body.images;
 
-	console.log('picooo');
-	console.log(images);
-
 	try {
 		// Find the product by its ID
 		const product = await Product.findByPk(productId, {
@@ -162,6 +159,7 @@ const updateProduct = async (req, res) => {
 
 const createProduct = async (req, res) => {
 	const { images, variants } = req.body; // Destructure the images property from req.body
+
 	delete req.body.variants;
 
 	try {
@@ -171,11 +169,12 @@ const createProduct = async (req, res) => {
 		const updatedPictures = await createPictures(images, product.id);
 		await product.setProduct_pictures(updatedPictures);
 
-		//creating variants
+		// //creating variants
 		const promises = variants.map(async (variant) => {
 			const [color, colorCreated] = await Colour.findOrCreate({
 				where: { name: variant.color },
 			});
+
 			const [size, sizeCreated] = await Size.findOrCreate({
 				where: { name: variant.sizes },
 			});
