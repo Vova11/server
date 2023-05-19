@@ -1,36 +1,38 @@
 require('dotenv').config({ path: `./.env.${process.env.NODE_ENV}` });
-
 const express = require('express');
+require('express-async-errors');
 const cors = require('cors');
 const PORT = process.env.PORT || 3008;
-
-const bodyParser = require('body-parser');
-
+const notFoundMiddleware = require('./src/middleware/notFound');
+const errorHandlerMiddleware = require('./src/middleware/errorHandler');
 const app = express();
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 const { parseProductId } = require('./src/helpers/parseProductId.js');
 const { sequelize } = require('./src/db/models');
 
-// app.use(express.json());
 app.use(cors());
 // Increase payload size limit
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(morgan('tiny'));
+app.use(express.json({ limit: '10mb' }));
+app.use(cookieParser(process.env.JWT_SECRET));
 
 // Routes
-app.get('/batukai', (req, res) => {
-	res.send('hi in batukai eshop. Fuck off Pico!!');
+app.get('/', (req, res) => {
+	res.send('e-commerce api!');
+});
+
+app.get('/api/v1', (req, res) => {
+	console.log(req.signedCookies);
+	res.send('e-commerce api!');
 });
 const apiVersion = '/api/v1';
+app.use(`${apiVersion}/auth`, require('./src/routes/auth'));
+app.use(`${apiVersion}/users`, require('./src/routes/users'));
 app.use(`${apiVersion}/products`, require('./src/routes/products'));
 app.use(`${apiVersion}/colours`, require('./src/routes/colours'));
-
-console.log('kok');
-console.log(process.env.NODE_ENV);
-console.log('Port je: ', PORT);
-console.log('port z dockeru');
-console.log(process.env.PORT);
-console.log(process.env.HOST);
-console.log(process.env.PORT);
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 const startTheApp = async () => {
 	try {
