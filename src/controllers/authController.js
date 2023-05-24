@@ -7,7 +7,9 @@ const { attachCookiesToResponse, createTokenUser } = require('../utils');
 
 const register = async (req, res) => {
 	const { firstName, email, password } = req.body;
+
 	const emailExists = await User.findOne({ where: { email } });
+
 	if (emailExists) {
 		throw new CustomError.BadRequestError('Email already exists');
 	}

@@ -14,16 +14,36 @@ const {
 	removeImage,
 	removeImageOnUpdate,
 } = require('../controllers/imageUploadController');
-router.route('/').get(getAllProducts).post(createProduct);
-router.route('/uploadImage').post(uploadImage);
-router.route('/removeImage').post(removeImage);
-router.route('/removeImageOnUpdate').post(removeImageOnUpdate);
-router.route('/uploadMultipleImages').post(uploadMultipleImages);
+
+const {
+	authenticateUser,
+	authorizePermissions,
+} = require('../middleware/authhentication');
+
+router
+	.route('/')
+	.get(getAllProducts)
+	.post([authenticateUser, authorizePermissions('admin')], createProduct);
+router
+	.route('/uploadImage')
+	.post([authenticateUser, authorizePermissions('admin')], uploadImage);
+router
+	.route('/removeImage')
+	.post([authenticateUser, authorizePermissions('admin')], removeImage);
+router
+	.route('/removeImageOnUpdate')
+	.post([authenticateUser, authorizePermissions('admin')], removeImageOnUpdate);
+router
+	.route('/uploadMultipleImages')
+	.post(
+		[authenticateUser, authorizePermissions('admin')],
+		uploadMultipleImages
+	);
 
 router
 	.route('/:id')
 	.get(getProductById)
 	.patch(updateProduct)
-	.delete(deleteProduct);
+	.delete([authenticateUser, authorizePermissions('admin')], deleteProduct);
 
 module.exports = router;

@@ -33,6 +33,14 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: 'Colour',
+			hooks: {
+				beforeSave: (instance, options) => {
+					instance.name = instance.name.toLowerCase();
+				},
+				beforeUpdate: (instance, options) => {
+					instance.name = instance.name.toLowerCase();
+				},
+			},
 		}
 	);
 	return Colour;

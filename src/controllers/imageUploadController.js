@@ -34,9 +34,6 @@ const uploadImage = async (req, res) => {
 		const { secure_url: imageUrl, public_id: publicId } =
 			await uploadSingleImageFunc(image, folder);
 
-		// console.log('PublicId: ' + publicId);
-		// console.log('URL: ' + imageUrl);
-
 		const imageUrls = { [publicId]: imageUrl };
 
 		res.status(200).json(imageUrls);

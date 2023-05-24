@@ -44,6 +44,14 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.DATE,
 			},
+			averageRating: {
+				type: Sequelize.FLOAT,
+				default: 0,
+			},
+			numberOfReviews: {
+				type: Sequelize.INTEGER,
+				default: 0,
+			},
 		});
 	},
 	async down(queryInterface, Sequelize) {

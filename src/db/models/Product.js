@@ -37,6 +37,18 @@ module.exports = (sequelize, DataTypes) => {
 				as: 'user',
 				allowNull: true,
 			});
+			Product.hasMany(models.Review, {
+				foreignKey: 'productId',
+				as: 'reviews',
+				onDelete: 'SET NULL',
+			});
+			Product.hasMany(models.OrderItem, {
+				foreignKey: {
+					name: 'productId',
+					allowNull: false,
+				},
+				onDelete: 'SET NULL',
+			});
 		}
 	}
 	Product.init(
@@ -45,9 +57,12 @@ module.exports = (sequelize, DataTypes) => {
 			description: DataTypes.TEXT,
 			price: DataTypes.DECIMAL,
 			featured: DataTypes.BOOLEAN,
+			image: DataTypes.STRING,
 			inventory: DataTypes.INTEGER, // DELETE THIS ONE
 			published: DataTypes.BOOLEAN,
 			freeShipping: DataTypes.BOOLEAN,
+			averageRating: DataTypes.FLOAT,
+			numberOfReviews: DataTypes.INTEGER,
 		},
 		{
 			sequelize,
