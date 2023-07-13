@@ -19,7 +19,8 @@ module.exports = {
 				type: Sequelize.FLOAT,
 			},
 			image: {
-				type: Sequelize.STRING,
+				type: Sequelize.DataTypes.ARRAY(Sequelize.DataTypes.STRING),
+				defaultValue: [],
 			},
 			featured: {
 				type: Sequelize.BOOLEAN,

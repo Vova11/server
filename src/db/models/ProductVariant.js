@@ -9,8 +9,14 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			ProductVariant.belongsTo(models.Product, { foreignKey: 'productId' });
-			ProductVariant.belongsTo(models.Colour, { foreignKey: 'colourId' });
-			ProductVariant.belongsTo(models.Size, { foreignKey: 'sizeId' });
+			ProductVariant.belongsTo(models.Colour, {
+				foreignKey: 'colourId',
+				as: 'colour',
+			});
+			ProductVariant.belongsTo(models.Size, {
+				foreignKey: 'sizeId',
+				as: 'size',
+			});
 		}
 	}
 	ProductVariant.init(

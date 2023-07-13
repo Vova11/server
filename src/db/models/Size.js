@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
 				otherKey: 'productId',
 				as: 'size_products',
 			});
+			Size.hasMany(models.ProductVariant, {
+				foreignKey: 'sizeId',
+				as: 'variants',
+			});
 		}
 	}
 	Size.init(
