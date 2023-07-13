@@ -6,13 +6,13 @@ const {
 	createProduct,
 	updateProduct,
 	deleteProduct,
+	publishProduct,
 } = require('../controllers/productsController');
 
 const {
 	uploadImage,
 	uploadMultipleImages,
 	removeImage,
-	removeImageOnUpdate,
 } = require('../controllers/imageUploadController');
 
 const {
@@ -30,15 +30,15 @@ router
 router
 	.route('/removeImage')
 	.post([authenticateUser, authorizePermissions('admin')], removeImage);
-router
-	.route('/removeImageOnUpdate')
-	.post([authenticateUser, authorizePermissions('admin')], removeImageOnUpdate);
+
 router
 	.route('/uploadMultipleImages')
 	.post(
 		[authenticateUser, authorizePermissions('admin')],
 		uploadMultipleImages
 	);
+
+router.route('/publish/:id').patch(publishProduct);
 
 router
 	.route('/:id')

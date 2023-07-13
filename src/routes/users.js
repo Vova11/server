@@ -16,6 +16,7 @@ const router = express.Router();
 router.route('/').get([authenticateUser, authorizePermissions('admin')], index);
 
 router.route('/showMe').get(authenticateUser, showCurrentUser);
+
 router.route('/updateUser').patch(authenticateUser, update);
 router.route('/updatePassword').patch(authenticateUser, updatePassword);
 

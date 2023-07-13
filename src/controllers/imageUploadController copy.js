@@ -8,13 +8,17 @@ const {
 } = require('../config/cloudinary');
 
 const uploadMultipleImages = async (req, res) => {
-	const { images } = req.body;
-	// console.log(images);
 	try {
+		const { images } = req.body;
 		const folder = 'your-folder-name/shoe2';
 		const uploadedImages = await uploadMultipleImagesFunc(images, folder);
-		console.log(uploadedImages);
-		res.status(200).json(uploadedImages);
+
+		const imageUrls = {};
+		uploadedImages.forEach((image) => {
+			imageUrls[image.public_id] = image.secure_url;
+		});
+
+		res.status(200).json(imageUrls);
 	} catch (error) {
 		res.status(500).json({ error: 'Failed to upload images' });
 	}
@@ -27,45 +31,51 @@ const uploadImage = async (req, res) => {
 
 		const { secure_url: imageUrl, public_id: publicId } =
 			await uploadSingleImageFunc(image, folder);
-		const imageUrls = {
-			publicId,
-			url: imageUrl,
-		};
-		console.log(imageUrls);
+
+		const imageUrls = { [publicId]: imageUrl };
+
 		res.status(200).json(imageUrls);
 	} catch (error) {
 		res.status(500).json({ error: 'Failed to upload image' });
 	}
 };
 
-const removeImage = async (req, res) => {
-	const { publicId, productId, source } = req.body;
-	console.log(source);
+const removeImageOnUpdate = async (req, res) => {
+	const { publicId } = req.body;
+
 	try {
-		if (source === 'product') {
-			const product = await Product.findByPk(productId);
-			if (!product) {
-				return res.status(404).json({ error: 'Product not found' });
-			}
-			const parsedImageData = product.image ? JSON.parse(product.image) : null;
-			if (parsedImageData && parsedImageData.publicId === publicId) {
-				await cloudinary.uploader.destroy(parsedImageData.publicId);
-				product.image = null; // Remove the image data from the Product.image field
-				await product.save(); // Save the updated product without the deleted image
-				return res.status(200).json({ msg: 'Image was deleted' });
-			}
+		const image = await Picture.findOne({ where: { publicId } });
+
+		if (!image) {
+			return res.status(404).json({ error: 'Image not found' });
 		}
-		if (source === 'picture') {
-			const picture = await Picture.findOne({ where: { publicId } });
-			if (!picture) {
-				return res.status(404).json({ error: 'Image not found' });
-			}
-			await picture.destroy(); // Remove the image from the database
-			await cloudinary.uploader.destroy(publicId); // Remove the image from Cloudinary
-			return res.status(200).json({ msg: 'Image was deleted' });
+
+		const product = await Product.findByPk(image.productId);
+
+		if (!product) {
+			return res.status(404).json({ error: 'Product not found' });
 		}
+
+		await image.destroy(); // Remove the image from the database
+
+		const result = await cloudinary.uploader.destroy(publicId); // Remove the image from Cloudinary
+
+		res.status(200).json({ msg: 'Image was deleted' });
 	} catch (error) {
-		return res.status(500).json({ error: 'Failed to delete the image' });
+		console.log(error);
+		res.status(500).json({ error: 'Failed to delete the image' });
+	}
+};
+
+const removeImage = async (req, res) => {
+	const { publicId } = req.body;
+	try {
+		const result = await cloudinary.uploader.destroy(publicId);
+		console.log(result);
+		res.status(200).json({ msg: 'image was deleted' });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ error: 'Failed to delete the image' });
 	}
 };
 
@@ -93,4 +103,5 @@ module.exports = {
 	uploadImage,
 	uploadMultipleImages,
 	removeImage,
+	removeImageOnUpdate,
 };

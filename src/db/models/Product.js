@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
 			});
 			Product.hasMany(models.ProductVariant, {
 				foreignKey: 'productId',
-				as: 'product_variant',
+				as: 'product_variants',
 			});
 			Product.belongsToMany(models.Colour, {
 				through: 'ProductVariants',
@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
 			description: DataTypes.TEXT,
 			price: DataTypes.DECIMAL,
 			featured: DataTypes.BOOLEAN,
-			image: DataTypes.STRING,
+			image: DataTypes.ARRAY(DataTypes.STRING),
 			inventory: DataTypes.INTEGER, // DELETE THIS ONE
 			published: DataTypes.BOOLEAN,
 			freeShipping: DataTypes.BOOLEAN,

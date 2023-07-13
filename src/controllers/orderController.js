@@ -10,19 +10,6 @@ const fakeStripeApi = ({ amount, currency }) => {
 	return { client_secret, amount };
 };
 
-const calculateTotal = (shippingFee, subtotal) => {
-	let updatedShippingFee = shippingFee;
-	let totalValue = 0;
-
-	if (subtotal > 50) {
-		updatedShippingFee = 0;
-	}
-
-	totalValue = updatedShippingFee + subtotal;
-
-	return { totalValue, updatedShippingFee };
-};
-
 // STRIPE PAYMENT
 // const stripe = require('stripe')(process.env.STRIPE_API_KEY);
 
@@ -37,6 +24,19 @@ const calculateTotal = (shippingFee, subtotal) => {
 
 // 	return { client_secret: paymentIntent.client_secret, amount };
 // };
+
+const calculateTotal = (shippingFee, subtotal) => {
+	let updatedShippingFee = shippingFee;
+	let totalValue = 0;
+
+	if (subtotal > 50) {
+		updatedShippingFee = 0;
+	}
+
+	totalValue = updatedShippingFee + subtotal;
+
+	return { totalValue, updatedShippingFee };
+};
 
 const createOrder = async (req, res) => {
 	const { items: cartItems, shippingFee } = req.body;
@@ -81,7 +81,7 @@ const createOrder = async (req, res) => {
 		currency: 'eur',
 	});
 
-	// get client secret COORECT PROD CODE
+	// get client secret PROD CODE
 	// const paymentIntent = await stripeAPI({
 	// 	amount: total,
 	// 	currency: 'eur',

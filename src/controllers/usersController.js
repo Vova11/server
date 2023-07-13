@@ -21,17 +21,22 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
 	const { id } = req.params;
+
 	const user = await User.findByPk(id, {
 		attributes: { exclude: ['password', 'role', 'createdAt', 'updatedAt'] },
 	});
-	if (!user) {
-		throw new CustomError.NotFoundError(`No user with id: ${req.params.id}`);
-	}
-	checkPermissions(req.user, user.id);
+	console.log(user);
+	// if (!user) {
+	// 	throw new CustomError.NotFoundError(`No user with id: ${req.params.id}`);
+	// }
+	// checkPermissions(req.user, user.id);
 	res.status(StatusCodes.OK).json({ user });
 };
 
 const showCurrentUser = async (req, res) => {
+	console.log('show current user');
+	console.log(res.header('Access-Control-Allow-Origin', req.headers.origin));
+
 	res.status(StatusCodes.OK).json({ user: req.user });
 };
 
@@ -76,12 +81,12 @@ const updatePassword = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-	// const { id } = req.params;
-	// const deleted = await User.destroy({ where: { id } });
-	// if (!deleted) {
-	//   throw new BadRequest('User not found');
-	// }
-	// return res.status(204).send();
+	const { id } = req.params;
+	const deleted = await User.destroy({ where: { id } });
+	if (!deleted) {
+		throw new BadRequest('User not found');
+	}
+	return res.status(204).send();
 };
 
 module.exports = {
