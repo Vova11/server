@@ -15,7 +15,7 @@ const getAllProducts = async (req, res) => {
 		'z-a': ['name', 'DESC'],
 	};
 
-	const { page = 1, skip = 0, limit = 1, published, sort } = req.query;
+	const { page = 1, skip = 0, limit = 10, published, sort } = req.query;
 	const [sortColumn, sortOrder] = sortOptions[sort] || sortOptions['latest'];
 	const offset = (page - 1) * limit + parseInt(skip);
 
@@ -91,7 +91,6 @@ const getAllProducts = async (req, res) => {
 		};
 	});
 
-	console.log(products.count);
 	res.status(StatusCodes.OK).json({
 		totalProducts: products.count,
 		currentPage: page,
@@ -125,7 +124,7 @@ const getProductById = async (req, res) => {
 			},
 			{
 				model: ProductVariant,
-				as: 'product_variant',
+				as: 'product_variants',
 			},
 			{
 				model: Picture,
@@ -150,7 +149,7 @@ const getProductById = async (req, res) => {
 		images: product.product_pictures,
 	};
 
-	product.product_variant.forEach((variant) => {
+	product.product_variants.forEach((variant) => {
 		let colour = product.product_colours.find((c) => c.id === variant.colourId);
 		let size =
 			product.product_sizes.length > 0
@@ -313,6 +312,7 @@ const deleteProduct = async (req, res) => {
 
 const publishProduct = async (req, res) => {
 	const { id } = req.body;
+
 	try {
 		const product = await Product.findByPk(id);
 		if (!product) {
@@ -334,6 +334,30 @@ const publishProduct = async (req, res) => {
 	}
 };
 
+const featureProduct = async (req, res) => {
+	const { id } = req.body;
+
+	try {
+		const product = await Product.findByPk(id);
+		if (!product) {
+			return res
+				.status(StatusCodes.NOT_FOUND)
+				.json({ message: 'Product not found' });
+		}
+		product.featured = !product.featured; // Toggle the value of the published state
+		await product.save(); // Save the updated product
+		return res.status(StatusCodes.OK).json({
+			message: 'Product published state toggled successfully',
+			productId: id,
+			published: product.featured,
+		});
+	} catch (error) {
+		return res
+			.status(StatusCodes.INTERNAL_SERVER_ERROR)
+			.json({ message: 'Failed to toggle the published state' });
+	}
+};
+
 module.exports = {
 	getAllProducts,
 	getProductById,
@@ -341,4 +365,5 @@ module.exports = {
 	deleteProduct,
 	updateProduct,
 	publishProduct,
+	featureProduct,
 };

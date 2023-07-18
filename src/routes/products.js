@@ -7,6 +7,7 @@ const {
 	updateProduct,
 	deleteProduct,
 	publishProduct,
+	featureProduct,
 } = require('../controllers/productsController');
 
 const {
@@ -38,7 +39,12 @@ router
 		uploadMultipleImages
 	);
 
-router.route('/publish/:id').patch(publishProduct);
+router
+	.route('/publish/:id')
+	.patch([authenticateUser, authorizePermissions('admin')], publishProduct);
+router
+	.route('/featured/:id')
+	.patch([authenticateUser, authorizePermissions('admin')], featureProduct);
 
 router
 	.route('/:id')
