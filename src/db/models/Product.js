@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: 'productId',
 				as: 'product_variants',
 			});
+			Product.belongsTo(models.Company, {
+				foreignKey: 'companyId',
+			});
 			Product.belongsToMany(models.Colour, {
 				through: 'ProductVariants',
 				foreignKey: 'productId',
@@ -63,6 +66,7 @@ module.exports = (sequelize, DataTypes) => {
 			freeShipping: DataTypes.BOOLEAN,
 			averageRating: DataTypes.FLOAT,
 			numberOfReviews: DataTypes.INTEGER,
+			companyId: DataTypes.INTEGER,
 		},
 		{
 			sequelize,
