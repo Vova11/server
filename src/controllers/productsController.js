@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const { db } = require('../db/models');
-const { Product, Colour, ProductVariant, Size, Picture, Review } =
+const { Product, Colour, ProductVariant, Company, Size, Picture, Review } =
 	db.sequelize.models;
 const { createPictures, deletePicture } = require('../helpers/pictureHelper');
 const { createVariants } = require('../helpers/variantHelper');
@@ -239,44 +239,108 @@ const updateProduct = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-	const { images, variants } = req.body; // Destructure the images property from req.body
-
+	const { images, variants, company } = req.body;
 	delete req.body.variants;
 
-	const product = await Product.create(req.body);
-	//creating pictures
-	// Add new images to the product
-	const updatedPictures = await createPictures(images, product.id);
-	console.log('adding photos');
-	await product.setProduct_pictures(updatedPictures);
+	let product;
+	let createdCompany;
 
-	//creating variants
-	const promises = variants.map(async (variant) => {
-		if (variant.color && variant.size) {
-			const [color, colorCreated] = await Colour.findOrCreate({
-				where: { name: variant.color },
-			});
+	try {
+		// Check if the company exists
+		const existingCompany = await Company.findOne({
+			where: { name: company },
+		});
 
-			const [size, sizeCreated] = await Size.findOrCreate({
-				where: { name: variant.size },
-			});
-
-			const variantInstance = await ProductVariant.create({
-				stock: parseInt(variant.stock),
-			});
-
-			await variantInstance.setProduct(product);
-			await variantInstance.setColour(color);
-			await variantInstance.setSize(size);
-			return variantInstance;
+		if (existingCompany) {
+			// If the company already exists, use it
+			createdCompany = existingCompany;
 		} else {
-			return null; // Skip creating the variant if color or size is empty
+			// If the company does not exist, create a new one
+			createdCompany = await Company.create({ name: company });
 		}
-	});
 
-	await Promise.all(promises);
-	res.status(StatusCodes.CREATED).json(product);
+		// Create the product and associate it with the company
+		product = await Product.create({
+			...req.body,
+			companyId: createdCompany.id,
+		});
+
+		// Add new images to the product
+		const updatedPictures = await createPictures(images, product.id);
+		await product.setProduct_pictures(updatedPictures);
+
+		// Create variants
+		const promises = variants.map(async (variant) => {
+			if (variant.color && variant.size) {
+				const [color, colorCreated] = await Colour.findOrCreate({
+					where: { name: variant.color },
+				});
+
+				const [size, sizeCreated] = await Size.findOrCreate({
+					where: { name: variant.size },
+				});
+
+				const variantInstance = await ProductVariant.create({
+					stock: parseInt(variant.stock),
+				});
+
+				await variantInstance.setProduct(product);
+				await variantInstance.setColour(color);
+				await variantInstance.setSize(size);
+				return variantInstance;
+			} else {
+				return null; // Skip creating the variant if color or size is empty
+			}
+		});
+
+		await Promise.all(promises);
+		res.status(StatusCodes.CREATED).json(product);
+	} catch (error) {
+		console.error('Failed to create product:', error);
+		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+			message: 'Failed to create product',
+		});
+	}
 };
+
+// const createProduct = async (req, res) => {
+// 	const { images, variants, company } = req.body; // Destructure the images property from req.body
+
+// 	delete req.body.variants;
+
+// 	const product = await Product.create(req.body);
+// 	//creating pictures
+// 	// Add new images to the product
+// 	const updatedPictures = await createPictures(images, product.id);
+// 	await product.setProduct_pictures(updatedPictures);
+
+// 	//creating variants
+// 	const promises = variants.map(async (variant) => {
+// 		if (variant.color && variant.size) {
+// 			const [color, colorCreated] = await Colour.findOrCreate({
+// 				where: { name: variant.color },
+// 			});
+
+// 			const [size, sizeCreated] = await Size.findOrCreate({
+// 				where: { name: variant.size },
+// 			});
+
+// 			const variantInstance = await ProductVariant.create({
+// 				stock: parseInt(variant.stock),
+// 			});
+
+// 			await variantInstance.setProduct(product);
+// 			await variantInstance.setColour(color);
+// 			await variantInstance.setSize(size);
+// 			return variantInstance;
+// 		} else {
+// 			return null; // Skip creating the variant if color or size is empty
+// 		}
+// 	});
+
+// 	await Promise.all(promises);
+// 	res.status(StatusCodes.CREATED).json(product);
+// };
 
 const deleteProduct = async (req, res) => {
 	const { id } = req.params;
