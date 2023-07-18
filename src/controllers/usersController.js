@@ -21,22 +21,31 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
 	const { id } = req.params;
-
+	console.log('tu si');
 	const user = await User.findByPk(id, {
-		attributes: { exclude: ['password', 'role', 'createdAt', 'updatedAt'] },
+		attributes: {
+			exclude: [
+				'password',
+				'role',
+				'createdAt',
+				'updatedAt',
+				'isVerified',
+				'verified',
+				'verificationToken',
+				'passwordToken',
+				'passwordTokenExpirationDate',
+			],
+		},
 	});
-	console.log(user);
-	// if (!user) {
-	// 	throw new CustomError.NotFoundError(`No user with id: ${req.params.id}`);
-	// }
-	// checkPermissions(req.user, user.id);
+
+	if (!user) {
+		throw new CustomError.NotFoundError(`No user with id: ${req.params.id}`);
+	}
+	checkPermissions(req.user, user.id);
 	res.status(StatusCodes.OK).json({ user });
 };
 
 const showCurrentUser = async (req, res) => {
-	console.log('show current user');
-	console.log(res.header('Access-Control-Allow-Origin', req.headers.origin));
-
 	res.status(StatusCodes.OK).json({ user: req.user });
 };
 
@@ -52,7 +61,6 @@ const update = async (req, res) => {
 		await user.update({
 			firstName,
 			lastName,
-			email,
 		});
 		const tokenUser = createTokenUser(user);
 		attachCookiesToResponse({ res, user: tokenUser });
