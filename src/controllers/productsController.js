@@ -131,6 +131,10 @@ const getProductById = async (req, res) => {
 				as: 'product_pictures',
 				attributes: ['id', 'publicId', 'url'],
 			},
+			{
+				model: Company,
+				as: 'company',
+			},
 		],
 	});
 
@@ -147,6 +151,7 @@ const getProductById = async (req, res) => {
 		numberOfReviews: product.numberOfReviews,
 		variants: [],
 		images: product.product_pictures,
+		company: product.company
 	};
 
 	product.product_variants.forEach((variant) => {
@@ -211,8 +216,8 @@ const updateProduct = async (req, res) => {
 	product.image = req.body.image;
 
 	const updatedVariants = await createVariants(variants, product.id);
-	const variantIds = updatedVariants.map((variant) => console.log(variant.id));
-
+	const variantIds = updatedVariants.map((variant) => variant.id);
+	
 	// Update only the variants that exist
 	const existingVariants = await ProductVariant.findAll({
 		where: {
@@ -257,6 +262,7 @@ const createProduct = async (req, res) => {
 		} else {
 			// If the company does not exist, create a new one
 			createdCompany = await Company.create({ name: company });
+			
 		}
 
 		// Create the product and associate it with the company

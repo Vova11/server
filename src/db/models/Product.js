@@ -18,9 +18,6 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: 'productId',
 				as: 'product_variants',
 			});
-			Product.belongsTo(models.Company, {
-				foreignKey: 'companyId',
-			});
 			Product.belongsToMany(models.Colour, {
 				through: 'ProductVariants',
 				foreignKey: 'productId',
@@ -38,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
 			Product.belongsTo(models.User, {
 				foreignKey: 'userId',
 				as: 'user',
+				allowNull: true,
+			});
+			Product.belongsTo(models.Company, {
+				foreignKey: 'companyId',
+				as: 'company',
 				allowNull: true,
 			});
 			Product.hasMany(models.Review, {

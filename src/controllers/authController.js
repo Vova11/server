@@ -14,47 +14,55 @@ const crypto = require('crypto');
 
 const register = async (req, res) => {
 	const { firstName, email, password } = req.body;
-	const emailExists = await User.findOne({ where: { email } });
+	console.log(req.body);
+	try {
+		const emailExists = await User.findOne({ where: { email } });
 
-	if (emailExists) {
-		throw new CustomError.BadRequestError('Email already exists');
+		if (emailExists) {
+			throw new CustomError.BadRequestError('Email already exists');
+		}
+		const userCount = await User.count();
+		let userRole = 'user';
+		if (userCount === 0) {
+			userRole = 'admin';
+		}
+	
+		const verificationToken = crypto.randomBytes(40).toString('hex');
+	
+		const user = await User.create({
+			firstName,
+			email,
+			password,
+			role: userRole,
+			verificationToken,
+		});
+	
+		const origin = 'http://localhost:3000';
+		// const origin = 'http://127.0.0.1:5173';
+		await sendVerificationEmail({
+			name: user.firstName,
+			email: user.email,
+			verificationToken: user.verificationToken,
+			origin,
+		});
+		// const tokenUser = createTokenUser(user);
+		// attachCookiesToResponse({ res, user: tokenUser });
+		res
+			.status(StatusCodes.CREATED)
+			.json({ msg: 'Success!, Please check your email to verify account.' });	
+	} catch (error) {
+		console.log(error);
 	}
-	const userCount = await User.count();
-	let userRole = 'user';
-	if (userCount === 0) {
-		userRole = 'admin';
-	}
-
-	const verificationToken = crypto.randomBytes(40).toString('hex');
-
-	const user = await User.create({
-		firstName,
-		email,
-		password,
-		role: userRole,
-		verificationToken,
-	});
-
-	const origin = 'http://localhost:3000';
-	// const origin = 'http://127.0.0.1:5173';
-	await sendVerificationEmail({
-		name: user.firstName,
-		email: user.email,
-		verificationToken: user.verificationToken,
-		origin,
-	});
-	// const tokenUser = createTokenUser(user);
-	// attachCookiesToResponse({ res, user: tokenUser });
-	res
-		.status(StatusCodes.CREATED)
-		.json({ msg: 'Success!, Please check your email to verify account.' });
+	
 };
 
 const login = async (req, res) => {
+	console.log(process.env.JWT_SECRET);
+	
 	const { email, password } = req.body;
 
 	if (!email || !password) {
-		throw new CustomError.BadRequestError('Please provide email and  user');
+		throw new CustomError.BadRequestError('Please provide email and user');
 	}
 	const user = await User.findOne({ where: { email } });
 	if (!user) {
@@ -71,7 +79,7 @@ const login = async (req, res) => {
 	}
 
 	const tokenUser = createTokenUser(user);
-
+	
 	let refreshToken = '';
 	// check for existing token
 	const existingToken = await Token.findOne({
