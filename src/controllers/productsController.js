@@ -43,11 +43,6 @@ const getAllProducts = async (req, res) => {
 				attributes: ['id', 'stock'],
 				include: [
 					{
-						model: Colour,
-						as: 'colour',
-						attributes: ['id', 'name'],
-					},
-					{
 						model: Size,
 						as: 'size',
 						attributes: ['id', 'name'],
@@ -59,12 +54,22 @@ const getAllProducts = async (req, res) => {
 				as: 'product_pictures',
 				attributes: ['id', 'publicId', 'url'],
 			},
+			{
+				model: Company,
+				as: 'company',
+				attributes: ['name'],
+			},
+			{
+				model: Colour,
+				as: 'colour',
+				attributes: ['name', 'hexColourCode'],
+			},
+
 		],
 	});
 
 	const transformedProducts = products.rows.map((product) => {
 		const variants = product.product_variants.map((variant) => ({
-			color: variant?.colour?.name,
 			size: variant?.size?.name,
 			stock: variant.stock,
 		}));
@@ -82,15 +87,23 @@ const getAllProducts = async (req, res) => {
 			product.image && product.image.length > 0
 				? product.image.map(JSON.parse)
 				: [];
+		
+		// Access only the name attribute of the company
+  		const companyName = product.company?.name;
+		const colourName = product.colour?.name;
+		const colourHexColourCode = product.colour?.hexColourCode;
 
 		return {
 			...rest,
 			image: parsedData,
 			images: images,
 			variants: variants,
+			company: companyName,
+			colour: colourName,
+			hexColourCode: colourHexColourCode
 		};
 	});
-
+	
 	res.status(StatusCodes.OK).json({
 		totalProducts: products.count,
 		currentPage: page,
@@ -104,15 +117,6 @@ const getProductById = async (req, res) => {
 
 	const product = await Product.findByPk(productId, {
 		include: [
-			{
-				model: Colour,
-				as: 'product_colours',
-				attributes: ['id', 'name'],
-				through: {
-					model: ProductVariant,
-					attributes: ['stock'],
-				},
-			},
 			{
 				model: Size,
 				as: 'product_sizes',
@@ -134,6 +138,12 @@ const getProductById = async (req, res) => {
 			{
 				model: Company,
 				as: 'company',
+				attributes: ['name']
+			},
+			{
+				model: Colour,
+				as: 'colour',
+				attributes: ['name', 'hexColourCode']
 			},
 		],
 	});
@@ -151,11 +161,12 @@ const getProductById = async (req, res) => {
 		numberOfReviews: product.numberOfReviews,
 		variants: [],
 		images: product.product_pictures,
-		company: product.company
+		company: product.company,
+		colour: product.colour.name,
+		hexColourCode: product.colour.hexColourCode
 	};
 
 	product.product_variants.forEach((variant) => {
-		let colour = product.product_colours.find((c) => c.id === variant.colourId);
 		let size =
 			product.product_sizes.length > 0
 				? product.product_sizes.find((c) => c.id === variant.sizeId)
@@ -163,29 +174,29 @@ const getProductById = async (req, res) => {
 
 		let stock = variant.stock;
 		let variantData = {
-			colour: colour?.name,
 			size: size?.name,
 			stock: stock,
 		};
 		data.variants.push(variantData);
 	});
 
+	
 	res.status(StatusCodes.OK).json(data);
 };
 
 const updateProduct = async (req, res) => {
-	const { editProductId: id, variants, images } = req.body;
-	console.log(id);
+	const { editProductId: id, variants, images, company, colour, hexColourCode } = req.body;
 	const product = await Product.findByPk(id, {
 		include: [
 			{
 				model: Colour,
-				as: 'product_colours',
-				attributes: ['id', 'name'],
-				through: {
-					model: ProductVariant,
-					attributes: ['stock'],
-				},
+				as: 'colour',
+				attributes: ['name', 'hexColourCode']
+			},
+			{
+				model: Company,
+				as: 'company',
+				attributes: ['name'],
 			},
 			{
 				model: Size,
@@ -203,23 +214,46 @@ const updateProduct = async (req, res) => {
 			},
 		],
 	});
+	
 	if (!product) {
 		return res
 			.status(StatusCodes.NOT_FOUND)
 			.json({ message: 'Product not found' });
 	}
 
-	// Update the product's basic information
-	product.name = req.body.name;
-	product.description = req.body.description;
-	product.price = req.body.price;
-	product.image = req.body.image;
-
-	const updatedVariants = await createVariants(variants, product.id);
-	const variantIds = updatedVariants.map((variant) => variant.id);
+	  // Update the product's basic information
+	  product.name = req.body.name;
+	  product.description = req.body.description;
+	  product.price = req.body.price;
+	  product.image = req.body.image;
+	  
+	// 1. Check if the Company exists, if not, create a new one
+	  let existingCompany = await Company.findOne({
+		where: { name: company },
+	  });
+	
+	  if (!existingCompany) {
+		existingCompany = await Company.create({ name: company });
+	  }
+	
+	  // 2. Check if the Colour exists, if not, create a new one
+	  let existingColour = await Colour.findOne({
+		where: { name: colour, hexColourCode},
+	  });
+	
+	  if (!existingColour) {
+		existingColour = await Colour.create({ name: colour, hexColourCode });
+	  }
+	
+	  // Update the Product with the newly created or existing Company and Colour
+	  product.companyId = existingCompany.id;
+	  product.colourId = existingColour.id;
+	  
+	 const updatedVariants = await createVariants(variants, product.id);
+	 const variantIds = updatedVariants.map((variant) => variant.id);
 	
 	// Update only the variants that exist
-	const existingVariants = await ProductVariant.findAll({
+	await ProductVariant.findAll({
 		where: {
 			id: variantIds,
 		},
@@ -236,117 +270,104 @@ const updateProduct = async (req, res) => {
 	const updatedPictures = await createPictures(images, product.id);
 	await product.setProduct_pictures(updatedPictures);
 	await product.save();
-	// Respond with the updated product
 
+	// Respond with the updated product
+	console.log(product);
 	res
 		.status(StatusCodes.OK)
 		.json({ message: 'Product updated successfully', product });
 };
 
 const createProduct = async (req, res) => {
-	const { images, variants, company } = req.body;
-	delete req.body.variants;
+	
+	const isError = true;
 
-	let product;
-	let createdCompany;
-
-	try {
-		// Check if the company exists
-		const existingCompany = await Company.findOne({
-			where: { name: company },
-		});
-
-		if (existingCompany) {
-			// If the company already exists, use it
-			createdCompany = existingCompany;
-		} else {
-			// If the company does not exist, create a new one
-			createdCompany = await Company.create({ name: company });
-			
-		}
-
-		// Create the product and associate it with the company
-		product = await Product.create({
-			...req.body,
-			companyId: createdCompany.id,
-		});
-
-		// Add new images to the product
-		const updatedPictures = await createPictures(images, product.id);
-		await product.setProduct_pictures(updatedPictures);
-
-		// Create variants
-		const promises = variants.map(async (variant) => {
-			if (variant.color && variant.size) {
-				const [color, colorCreated] = await Colour.findOrCreate({
-					where: { name: variant.color },
-				});
-
-				const [size, sizeCreated] = await Size.findOrCreate({
-					where: { name: variant.size },
-				});
-
-				const variantInstance = await ProductVariant.create({
-					stock: parseInt(variant.stock),
-				});
-
-				await variantInstance.setProduct(product);
-				await variantInstance.setColour(color);
-				await variantInstance.setSize(size);
-				return variantInstance;
-			} else {
-				return null; // Skip creating the variant if color or size is empty
-			}
-		});
-
-		await Promise.all(promises);
-		res.status(StatusCodes.CREATED).json(product);
-	} catch (error) {
-		console.error('Failed to create product:', error);
-		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-			message: 'Failed to create product',
-		});
+	if (isError) {
+		// Force the function to return a rejected Promise
+		return Promise.reject(new Error('An error occurred.'));
 	}
+
+	// If no error, continue processing and return a resolved Promise
+	return Promise.resolve('Success!');
+	
+	// const { images, variants, company, colour, hexColourCode } = req.body;
+	// delete req.body.variants;
+
+	// let product;
+	// let createdCompany;
+	// let createdColour;
+
+	// try {
+	// 	// Check if the company exists
+	// 	const existingCompany = await Company.findOne({
+	// 		where: { name: company },
+	// 	});
+
+	// 	if (existingCompany) {
+	// 		// If the company already exists, use it
+	// 		createdCompany = existingCompany;
+	// 	} else {
+	// 		// If the company does not exist, create a new one
+	// 		createdCompany = await Company.create({ name: company  });
+			
+	// 	}
+
+	// 	// Check if the colour exists
+		
+		
+	// 	const existingColour = await Colour.findOne({
+	// 		where: { name: colour },
+	// 	});
+
+	// 	if (existingColour) {
+	// 		// If the company already exists, use it
+	// 		createdColour = existingColour;
+	// 	} else {
+	// 		// If the company does not exist, create a new one
+	// 		createdColour = await Colour.create({ name: colour,  hexColourCode });
+			
+	// 	}
+
+	// 	// Create the product and associate it with the company
+	// 	product = await Product.create({
+	// 		...req.body,
+	// 		companyId: createdCompany.id,
+	// 		colourId: createdColour.id,
+	// 	});
+
+	// 	// Add new images to the product
+	// 	const updatedPictures = await createPictures(images, product.id);
+	// 	await product.setProduct_pictures(updatedPictures);
+
+	// 	// Create variants
+	// 	const promises = variants.map(async (variant) => {
+	// 		if (variant.size) {
+	// 			const [size, sizeCreated] = await Size.findOrCreate({
+	// 				where: { name: variant.size },
+	// 			});
+
+	// 			const variantInstance = await ProductVariant.create({
+	// 				stock: parseInt(variant.stock),
+	// 			});
+
+	// 			await variantInstance.setProduct(product);
+	// 			await variantInstance.setSize(size);
+	// 			return variantInstance;
+	// 		} else {
+	// 			return null; // Skip creating the variant if color or size is empty
+	// 		}
+	// 	});
+
+	// 	await Promise.all(promises);
+	// 	res.status(StatusCodes.CREATED).json(product);
+	// } catch (error) {
+	// 	console.error('Failed to create product:', error);
+	// 	res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+	// 		msg: 'Failed to create product',
+	// 	});
+	// }
 };
 
-// const createProduct = async (req, res) => {
-// 	const { images, variants, company } = req.body; // Destructure the images property from req.body
-
-// 	delete req.body.variants;
-
-// 	const product = await Product.create(req.body);
-// 	//creating pictures
-// 	// Add new images to the product
-// 	const updatedPictures = await createPictures(images, product.id);
-// 	await product.setProduct_pictures(updatedPictures);
-
-// 	//creating variants
-// 	const promises = variants.map(async (variant) => {
-// 		if (variant.color && variant.size) {
-// 			const [color, colorCreated] = await Colour.findOrCreate({
-// 				where: { name: variant.color },
-// 			});
-
-// 			const [size, sizeCreated] = await Size.findOrCreate({
-// 				where: { name: variant.size },
-// 			});
-
-// 			const variantInstance = await ProductVariant.create({
-// 				stock: parseInt(variant.stock),
-// 			});
-
-// 			await variantInstance.setProduct(product);
-// 			await variantInstance.setColour(color);
-// 			await variantInstance.setSize(size);
-// 			return variantInstance;
-// 		} else {
-// 			return null; // Skip creating the variant if color or size is empty
-// 		}
-// 	});
-
-// 	await Promise.all(promises);
-// 	res.status(StatusCodes.CREATED).json(product);
-// };
 
 const deleteProduct = async (req, res) => {
 	const { id } = req.params;
@@ -369,12 +390,12 @@ const deleteProduct = async (req, res) => {
 		deletePicture(image.publicId);
 	});
 	await Promise.all(picturePromises);
-	const parsedImageData = product.image.map(JSON.parse);
-	const mainPicturePromises = parsedImageData.map(async (image) => {
-		deletePicture(image.publicId);
-	});
+	// const parsedImageData = product.image.map(JSON.parse);
+	// const mainPicturePromises = parsedImageData.map(async (image) => {
+	// 	deletePicture(image.publicId);
+	// });
 
-	await Promise.all(mainPicturePromises);
+	// await Promise.all(mainPicturePromises);
 
 	await product.destroy();
 	res.status(StatusCodes.OK).json({ message: 'Success! Product removed.' });

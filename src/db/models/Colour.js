@@ -8,31 +8,28 @@ module.exports = (sequelize, DataTypes) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			Colour.belongsToMany(models.Product, {
-				through: 'ProductVariants',
+			Colour.hasMany(models.Product, {
 				foreignKey: 'colourId',
-				otherKey: 'productId',
-				as: 'colour_products',
 			});
-			Colour.hasMany(models.ProductVariant, {
-				foreignKey: 'colourId',
-				as: 'variants',
-			});
+			
+			// this was used before through variant
 			// Colour.belongsToMany(models.Product, {
-			// 	through: models.ProductColour,
+			// 	through: 'ProductVariants',
 			// 	foreignKey: 'colourId',
 			// 	otherKey: 'productId',
-			// 	as: 'products',
+			// 	as: 'colour_products',
 			// });
-			// Colour.belongsToMany(models.Product, {
-			// 	through: 'ProductVariant',
+			// Colour.hasMany(models.ProductVariant, {
 			// 	foreignKey: 'colourId',
+			// 	as: 'variants',
 			// });
+			// this was used before through variant
 		}
 	}
 	Colour.init(
 		{
 			name: DataTypes.STRING,
+			hexColourCode: DataTypes.STRING
 		},
 		{
 			sequelize,

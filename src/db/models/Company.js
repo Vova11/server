@@ -20,6 +20,14 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: 'Company',
+			hooks: {
+				beforeSave: (instance, options) => {
+					instance.name = instance.name.toLowerCase();
+				},
+				beforeUpdate: (instance, options) => {
+					instance.name = instance.name.toLowerCase();
+				},
+			},
 		}
 	);
 	return Company;

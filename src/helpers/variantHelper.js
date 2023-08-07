@@ -1,22 +1,18 @@
 const { Op } = require('sequelize');
 const { db } = require('../db/models');
-const { Colour, ProductVariant, Size } = db.sequelize.models;
+const { ProductVariant, Size } = db.sequelize.models;
 
 const createVariants = async (variants, productId) => {
 	const promises = variants.map(async (variant) => {
-		const { color, size, stock } = variant;
-		if (color !== '' && size !== '') {
+		const { size, stock } = variant;
+		if (size !== '') {
 			try {
-				let [createdColour] = await Colour.findOrCreate({
-					where: { name: color },
-				});
 				let [createdSize] = await Size.findOrCreate({
 					where: { name: size },
 				});
 				const [createdVariant] = await ProductVariant.findOrCreate({
 					where: {
 						productId,
-						colourId: createdColour.id,
 						sizeId: createdSize.id,
 					},
 					defaults: { stock },

@@ -18,12 +18,12 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: 'productId',
 				as: 'product_variants',
 			});
-			Product.belongsToMany(models.Colour, {
-				through: 'ProductVariants',
-				foreignKey: 'productId',
-				otherKey: 'colourId',
-				as: 'product_colours',
-			});
+			// Product.belongsToMany(models.Colour, {
+			// 	through: 'ProductVariants',
+			// 	foreignKey: 'productId',
+			// 	otherKey: 'colourId',
+			// 	as: 'product_colours',
+			// });
 
 			Product.belongsToMany(models.Size, {
 				through: 'ProductVariants',
@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
 			Product.belongsTo(models.User, {
 				foreignKey: 'userId',
 				as: 'user',
+				allowNull: true,
+			});
+			Product.belongsTo(models.Colour, {
+				foreignKey: 'colourId',
+				as: 'colour',
 				allowNull: true,
 			});
 			Product.belongsTo(models.Company, {
