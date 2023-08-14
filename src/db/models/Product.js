@@ -66,10 +66,10 @@ module.exports = (sequelize, DataTypes) => {
 			name: DataTypes.STRING,
 			description: DataTypes.TEXT,
 			price: DataTypes.DECIMAL,
-			featured: DataTypes.BOOLEAN,
 			image: DataTypes.ARRAY(DataTypes.STRING),
 			inventory: DataTypes.INTEGER, // DELETE THIS ONE
 			published: DataTypes.BOOLEAN,
+			featured: DataTypes.BOOLEAN,
 			freeShipping: DataTypes.BOOLEAN,
 			averageRating: DataTypes.FLOAT,
 			numberOfReviews: DataTypes.INTEGER,

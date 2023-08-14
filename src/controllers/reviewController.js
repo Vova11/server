@@ -13,7 +13,8 @@ const createReview = async (req, res) => {
 	const isValidProduct = await Product.findByPk(productId);
 
 	if (!isValidProduct) {
-		throw new ErrorCustomError.NotFoundError('No product found');
+		// throw new ErrorCustomError.NotFoundError('No product found');
+		console.log('product not found');
 	}
 
 	const alreadySubmitted = await Review.findOne({
@@ -24,9 +25,10 @@ const createReview = async (req, res) => {
 		},
 	});
 	if (alreadySubmitted) {
-		throw new CustomError.BadRequestError(
-			'User already has review for product'
-		);
+		// throw new CustomError.BadRequestError(
+		// 	'User already has review for product'
+		// );
+		console.log('User already has review for product');
 	}
 	req.body.userId = req.user.id;
 	const review = await Review.create(req.body);
