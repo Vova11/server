@@ -13,6 +13,8 @@ const getAllProducts = async (req, res) => {
 		oldest: ['createdAt', 'ASC'],
 		'a-z': ['name', 'ASC'],
 		'z-a': ['name', 'DESC'],
+		'price-lowest': ['price', 'ASC'], // New entry for price-lowest
+		'price-highest': ['price', 'DESC'], // New entry for price-highest
 	};
 
 	const {
