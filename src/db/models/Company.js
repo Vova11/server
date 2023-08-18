@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
 			// Define the association with the Product model
 			Company.hasMany(models.Product, {
 				foreignKey: 'companyId',
+				as: 'products',
 			});
 		}
 	}

@@ -1,4 +1,4 @@
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const { db } = require('../db/models');
 const { Product, Colour, ProductVariant, Company, Size, Picture, Review } =
 	db.sequelize.models;
@@ -6,6 +6,10 @@ const { createPictures, deletePicture } = require('../helpers/pictureHelper');
 const { createVariants } = require('../helpers/variantHelper');
 const CustomError = require('../errors');
 const { StatusCodes } = require('http-status-codes');
+const {
+	constructIncludeArray,
+	transformProduct,
+} = require('../helpers/constructIncludeArray');
 
 const getAllProducts = async (req, res) => {
 	const sortOptions = {
@@ -20,10 +24,11 @@ const getAllProducts = async (req, res) => {
 	const {
 		page = 1,
 		skip = 0,
-		limit = 1,
+		limit = 10,
 		published,
 		featured,
 		sort,
+		company,
 	} = req.query;
 
 	const [sortColumn, sortOrder] = sortOptions[sort] || sortOptions['latest'];
@@ -45,86 +50,42 @@ const getAllProducts = async (req, res) => {
 		whereCondition.published = published === 'true';
 	}
 
-	const products = await Product.findAndCountAll({
-		where: whereCondition,
-		order: [[sortColumn, sortOrder]],
-		skip: skip,
-		limit: limit,
-		offset: offset,
-		distinct: true, // Add the distinct option to retrieve only distinct products
-		include: [
-			{
-				model: ProductVariant,
-				as: 'product_variants',
-				attributes: ['id', 'stock'],
-				include: [
-					{
-						model: Size,
-						as: 'size',
-						attributes: ['id', 'name'],
-					},
-				],
-			},
-			{
-				model: Picture,
-				as: 'product_pictures',
-				attributes: ['id', 'publicId', 'url'],
-			},
-			{
-				model: Company,
-				as: 'company',
-				attributes: ['name'],
-			},
-			{
-				model: Colour,
-				as: 'colour',
-				attributes: ['name', 'hexColourCode'],
-			},
-		],
-	});
+	if (company !== 'all') {
+		whereCondition['$company.name$'] = { [Op.eq]: company };
+	}
+	try {
+		const includeAssociatedModels = constructIncludeArray(company);
+		const products = await Product.findAndCountAll({
+			where: whereCondition,
+			order: [[sortColumn, sortOrder]],
+			skip: skip,
+			limit: limit,
+			offset: offset,
+			distinct: true, // Add the distinct option to retrieve only distinct products
+			include: includeAssociatedModels,
+		});
 
-	const transformedProducts = products.rows.map((product) => {
-		const variants = product.product_variants.map((variant) => ({
-			size: variant?.size?.name,
-			stock: variant.stock,
-		}));
+		const transformedProducts = products.rows.map(transformProduct);
 
-		// Change the attribute name from product_pictures to images
-		const { product_pictures, ...rest } = product.toJSON();
+		// return all unique companies
+		const uniqueCompanyNames = await Company.findAll({
+			attributes: [
+				[Sequelize.fn('DISTINCT', Sequelize.col('name')), 'name'], // Use DISTINCT to get unique names
+			],
+		});
 
-		const images = product_pictures.map((picture) => ({
-			id: picture.id,
-			publicId: picture.publicId,
-			url: picture.url,
-		}));
-
-		const parsedData =
-			product.image && product.image.length > 0
-				? product.image.map(JSON.parse)
-				: [];
-
-		// Access only the name attribute of the company
-		const companyName = product.company?.name;
-		const colourName = product.colour?.name;
-		const colourHexColourCode = product.colour?.hexColourCode;
-
-		return {
-			...rest,
-			image: parsedData,
-			images: images,
-			variants: variants,
-			company: companyName,
-			colour: colourName,
-			hexColourCode: colourHexColourCode,
-		};
-	});
-
-	res.status(StatusCodes.OK).json({
-		totalProducts: products.count,
-		currentPage: page,
-		numOfPages: Math.ceil(products.count / limit),
-		products: transformedProducts,
-	});
+		res.status(StatusCodes.OK).json({
+			totalProducts: products.count,
+			currentPage: page,
+			numOfPages: Math.ceil(products.count / limit),
+			products: transformedProducts,
+			companies: uniqueCompanyNames,
+		});
+	} catch (error) {
+		return res
+			.status(StatusCodes.INTERNAL_SERVER_ERROR)
+			.json({ message: 'Failed to load products' });
+	}
 };
 
 const getProductById = async (req, res) => {
@@ -306,17 +267,6 @@ const updateProduct = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-	const isError = true;
-
-	// test if ERROR on CREATE
-	// if (isError) {
-	// 	// Force the function to return a rejected Promise
-	// 	return Promise.reject(new Error('An error occurred.'));
-	// }
-
-	// If no error, continue processing and return a resolved Promise
-	return Promise.resolve('Success!');
-
 	const { images, variants, company, colour, hexColourCode } = req.body;
 	delete req.body.variants;
 
