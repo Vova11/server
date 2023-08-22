@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "NODE_ENV=development nodemon index.js",
 		"sequelize": "sequelize db:migrate:undo:all && sequelize db:migrate",
-		"start": "node index.js",
+		"start": "npm run migrate && npm run migrate:status && node index.js",
 		"migrate:status": "sequelize db:migrate:status",
 		"migrate": "sequelize db:migrate",
 		"migration_dev": "NODE_ENV=development sequelize db:migrate:undo:all && sequelize db:migrate",
