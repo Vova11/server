@@ -22,7 +22,7 @@ const limiter = rateLimit({
 app.use(limiter);
 app.use(helmet());
 const corsOptions = {
-	origin: 'http://localhost:3000',
+	origin: process.env.URI,
 	credentials: true, //access-control-allow-credentials:true
 	// optionSuccessStatus: 200,
 };
