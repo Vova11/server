@@ -26,9 +26,9 @@ const register = async (req, res) => {
 		if (userCount === 0) {
 			userRole = 'admin';
 		}
-	
+
 		const verificationToken = crypto.randomBytes(40).toString('hex');
-	
+
 		const user = await User.create({
 			firstName,
 			email,
@@ -36,8 +36,8 @@ const register = async (req, res) => {
 			role: userRole,
 			verificationToken,
 		});
-	
-		const origin = 'http://localhost:3000';
+
+		const origin = process.env.URI;
 		// const origin = 'http://127.0.0.1:5173';
 		await sendVerificationEmail({
 			name: user.firstName,
@@ -49,16 +49,15 @@ const register = async (req, res) => {
 		// attachCookiesToResponse({ res, user: tokenUser });
 		res
 			.status(StatusCodes.CREATED)
-			.json({ msg: 'Success!, Please check your email to verify account.' });	
+			.json({ msg: 'Success!, Please check your email to verify account.' });
 	} catch (error) {
 		console.log(error);
 	}
-	
 };
 
 const login = async (req, res) => {
 	console.log(process.env.JWT_SECRET);
-	
+
 	const { email, password } = req.body;
 
 	if (!email || !password) {
@@ -79,7 +78,7 @@ const login = async (req, res) => {
 	}
 
 	const tokenUser = createTokenUser(user);
-	
+
 	let refreshToken = '';
 	// check for existing token
 	const existingToken = await Token.findOne({
@@ -168,7 +167,7 @@ const forgotPassword = async (req, res) => {
 	if (user) {
 		const passwordToken = crypto.randomBytes(70).toString('hex');
 		// send email
-		const origin = 'http://localhost:3000';
+		const origin = process.env.URI;
 		await sendResetPasswordEmail({
 			name: user.name,
 			email: user.email,

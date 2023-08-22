@@ -1,4 +1,4 @@
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const { db } = require('../db/models');
 const { Product, Colour, ProductVariant, Company, Size, Picture, Review } =
 	db.sequelize.models;
@@ -6,6 +6,10 @@ const { createPictures, deletePicture } = require('../helpers/pictureHelper');
 const { createVariants } = require('../helpers/variantHelper');
 const CustomError = require('../errors');
 const { StatusCodes } = require('http-status-codes');
+const {
+	constructIncludeArray,
+	transformProduct,
+} = require('../helpers/constructIncludeArray');
 
 const getAllProducts = async (req, res) => {
 	const sortOptions = {
@@ -13,90 +17,75 @@ const getAllProducts = async (req, res) => {
 		oldest: ['createdAt', 'ASC'],
 		'a-z': ['name', 'ASC'],
 		'z-a': ['name', 'DESC'],
+		'price-lowest': ['price', 'ASC'], // New entry for price-lowest
+		'price-highest': ['price', 'DESC'], // New entry for price-highest
 	};
 
-	const { page = 1, skip = 0, limit = 10, published, sort } = req.query;
+	const {
+		page = 1,
+		skip = 0,
+		limit = 10,
+		published,
+		featured,
+		sort,
+		company,
+	} = req.query;
+
 	const [sortColumn, sortOrder] = sortOptions[sort] || sortOptions['latest'];
 	const offset = (page - 1) * limit + parseInt(skip);
 
 	const whereCondition = {};
-	if (published !== undefined) {
-		if (published === 'all') {
-			// If published is empty, include both true and false values
-			whereCondition.published = { [Op.in]: [true, false] };
-		} else {
-			whereCondition.published = published === 'true';
-		}
+
+	if (featured === 'all') {
+		// If published is empty, include both true and false values
+		whereCondition.featured = { [Op.in]: [true, false] };
+	} else {
+		whereCondition.featured = featured === 'true';
 	}
 
-	const products = await Product.findAndCountAll({
-		where: whereCondition,
-		order: [[sortColumn, sortOrder]],
-		skip: skip,
-		limit: limit,
-		offset: offset,
-		distinct: true, // Add the distinct option to retrieve only distinct products
-		include: [
-			{
-				model: ProductVariant,
-				as: 'product_variants',
-				attributes: ['id', 'stock'],
-				include: [
-					{
-						model: Colour,
-						as: 'colour',
-						attributes: ['id', 'name'],
-					},
-					{
-						model: Size,
-						as: 'size',
-						attributes: ['id', 'name'],
-					},
-				],
-			},
-			{
-				model: Picture,
-				as: 'product_pictures',
-				attributes: ['id', 'publicId', 'url'],
-			},
-		],
-	});
+	if (published === 'all') {
+		// If published is empty, include both true and false values
+		whereCondition.published = { [Op.in]: [true, false] };
+	} else {
+		whereCondition.published = published === 'true';
+	}
 
-	const transformedProducts = products.rows.map((product) => {
-		const variants = product.product_variants.map((variant) => ({
-			color: variant?.colour?.name,
-			size: variant?.size?.name,
-			stock: variant.stock,
-		}));
+	if (company !== 'all') {
+		whereCondition['$company.name$'] = { [Op.eq]: company };
+	}
+	try {
+		const includeAssociatedModels = constructIncludeArray(company);
+		const products = await Product.findAndCountAll({
+			where: whereCondition,
+			order: [[sortColumn, sortOrder]],
+			skip: skip,
+			limit: limit,
+			offset: offset,
+			distinct: true, // Add the distinct option to retrieve only distinct products
+			include: includeAssociatedModels,
+		});
 
-		// Change the attribute name from product_pictures to images
-		const { product_pictures, ...rest } = product.toJSON();
+		const transformedProducts = products.rows.map(transformProduct);
 
-		const images = product_pictures.map((picture) => ({
-			id: picture.id,
-			publicId: picture.publicId,
-			url: picture.url,
-		}));
+		// return all unique companies
+		const uniqueCompanyNames = await Company.findAll({
+			attributes: [
+				[Sequelize.fn('DISTINCT', Sequelize.col('name')), 'name'], // Use DISTINCT to get unique names
+			],
+		});
 
-		const parsedData =
-			product.image && product.image.length > 0
-				? product.image.map(JSON.parse)
-				: [];
-
-		return {
-			...rest,
-			image: parsedData,
-			images: images,
-			variants: variants,
-		};
-	});
-
-	res.status(StatusCodes.OK).json({
-		totalProducts: products.count,
-		currentPage: page,
-		numOfPages: Math.ceil(products.count / limit),
-		products: transformedProducts,
-	});
+		res.status(StatusCodes.OK).json({
+			totalProducts: products.count,
+			currentPage: page,
+			numOfPages: Math.ceil(products.count / limit),
+			products: transformedProducts,
+			companies: uniqueCompanyNames,
+		});
+	} catch (error) {
+		return res
+			.status(StatusCodes.INTERNAL_SERVER_ERROR)
+			.json({ message: 'Failed to load products' });
+	}
 };
 
 const getProductById = async (req, res) => {
@@ -104,15 +93,6 @@ const getProductById = async (req, res) => {
 
 	const product = await Product.findByPk(productId, {
 		include: [
-			{
-				model: Colour,
-				as: 'product_colours',
-				attributes: ['id', 'name'],
-				through: {
-					model: ProductVariant,
-					attributes: ['stock'],
-				},
-			},
 			{
 				model: Size,
 				as: 'product_sizes',
@@ -134,6 +114,17 @@ const getProductById = async (req, res) => {
 			{
 				model: Company,
 				as: 'company',
+				attributes: ['name'],
+			},
+			{
+				model: Colour,
+				as: 'colour',
+				attributes: ['name', 'hexColourCode'],
+			},
+			{
+				model: Review,
+				as: 'reviews',
+				attributes: ['id', 'title', 'comment'],
 			},
 		],
 	});
@@ -151,11 +142,13 @@ const getProductById = async (req, res) => {
 		numberOfReviews: product.numberOfReviews,
 		variants: [],
 		images: product.product_pictures,
-		company: product.company
+		company: product.company,
+		colour: product.colour.name,
+		hexColourCode: product.colour.hexColourCode,
+		reviews: product.reviews,
 	};
 
 	product.product_variants.forEach((variant) => {
-		let colour = product.product_colours.find((c) => c.id === variant.colourId);
 		let size =
 			product.product_sizes.length > 0
 				? product.product_sizes.find((c) => c.id === variant.sizeId)
@@ -163,7 +156,6 @@ const getProductById = async (req, res) => {
 
 		let stock = variant.stock;
 		let variantData = {
-			colour: colour?.name,
 			size: size?.name,
 			stock: stock,
 		};
@@ -174,18 +166,25 @@ const getProductById = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
-	const { editProductId: id, variants, images } = req.body;
-	console.log(id);
+	const {
+		editProductId: id,
+		variants,
+		images,
+		company,
+		colour,
+		hexColourCode,
+	} = req.body;
 	const product = await Product.findByPk(id, {
 		include: [
 			{
 				model: Colour,
-				as: 'product_colours',
-				attributes: ['id', 'name'],
-				through: {
-					model: ProductVariant,
-					attributes: ['stock'],
-				},
+				as: 'colour',
+				attributes: ['name', 'hexColourCode'],
+			},
+			{
+				model: Company,
+				as: 'company',
+				attributes: ['name'],
 			},
 			{
 				model: Size,
@@ -203,6 +202,7 @@ const updateProduct = async (req, res) => {
 			},
 		],
 	});
+
 	if (!product) {
 		return res
 			.status(StatusCodes.NOT_FOUND)
@@ -215,40 +215,64 @@ const updateProduct = async (req, res) => {
 	product.price = req.body.price;
 	product.image = req.body.image;
 
+	// 1. Check if the Company exists, if not, create a new one
+	let existingCompany = await Company.findOne({
+		where: { name: company },
+	});
+
+	if (!existingCompany) {
+		existingCompany = await Company.create({ name: company });
+	}
+
+	// 2. Check if the Colour exists, if not, create a new one
+	let existingColour = await Colour.findOne({
+		where: { name: colour, hexColourCode },
+	});
+
+	if (!existingColour) {
+		existingColour = await Colour.create({ name: colour, hexColourCode });
+	}
+
+	// Update the Product with the newly created or existing Company and Colour
+	product.companyId = existingCompany.id;
+	product.colourId = existingColour.id;
+
 	const updatedVariants = await createVariants(variants, product.id);
 	const variantIds = updatedVariants.map((variant) => variant.id);
-	
+
 	// Update only the variants that exist
-	const existingVariants = await ProductVariant.findAll({
+	await ProductVariant.findAll({
 		where: {
 			id: variantIds,
 		},
 	});
 
 	// Remove any variants that were not included in the updated variants
-	await ProductVariant.destroy({
-		where: {
-			id: product.id,
-			id: { [Op.notIn]: variantIds },
-		},
-	});
+	// await ProductVariant.destroy({
+	// 	where: {
+	// 		id: product.id,
+	// 		id: { [Op.notIn]: variantIds },
+	// 	},
+	// });
 	// Add new images to the product
 	const updatedPictures = await createPictures(images, product.id);
 	await product.setProduct_pictures(updatedPictures);
 	await product.save();
-	// Respond with the updated product
 
+	// Respond with the updated product
+	console.log(product);
 	res
 		.status(StatusCodes.OK)
 		.json({ message: 'Product updated successfully', product });
 };
 
 const createProduct = async (req, res) => {
-	const { images, variants, company } = req.body;
+	const { images, variants, company, colour, hexColourCode } = req.body;
 	delete req.body.variants;
 
 	let product;
 	let createdCompany;
+	let createdColour;
 
 	try {
 		// Check if the company exists
@@ -262,13 +286,27 @@ const createProduct = async (req, res) => {
 		} else {
 			// If the company does not exist, create a new one
 			createdCompany = await Company.create({ name: company });
-			
+		}
+
+		// Check if the colour exists
+
+		const existingColour = await Colour.findOne({
+			where: { name: colour },
+		});
+
+		if (existingColour) {
+			// If the company already exists, use it
+			createdColour = existingColour;
+		} else {
+			// If the company does not exist, create a new one
+			createdColour = await Colour.create({ name: colour, hexColourCode });
 		}
 
 		// Create the product and associate it with the company
 		product = await Product.create({
 			...req.body,
 			companyId: createdCompany.id,
+			colourId: createdColour.id,
 		});
 
 		// Add new images to the product
@@ -277,11 +315,7 @@ const createProduct = async (req, res) => {
 
 		// Create variants
 		const promises = variants.map(async (variant) => {
-			if (variant.color && variant.size) {
-				const [color, colorCreated] = await Colour.findOrCreate({
-					where: { name: variant.color },
-				});
-
+			if (variant.size) {
 				const [size, sizeCreated] = await Size.findOrCreate({
 					where: { name: variant.size },
 				});
@@ -291,7 +325,6 @@ const createProduct = async (req, res) => {
 				});
 
 				await variantInstance.setProduct(product);
-				await variantInstance.setColour(color);
 				await variantInstance.setSize(size);
 				return variantInstance;
 			} else {
@@ -304,49 +337,10 @@ const createProduct = async (req, res) => {
 	} catch (error) {
 		console.error('Failed to create product:', error);
 		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-			message: 'Failed to create product',
+			msg: 'Failed to create product',
 		});
 	}
 };
-
-// const createProduct = async (req, res) => {
-// 	const { images, variants, company } = req.body; // Destructure the images property from req.body
-
-// 	delete req.body.variants;
-
-// 	const product = await Product.create(req.body);
-// 	//creating pictures
-// 	// Add new images to the product
-// 	const updatedPictures = await createPictures(images, product.id);
-// 	await product.setProduct_pictures(updatedPictures);
-
-// 	//creating variants
-// 	const promises = variants.map(async (variant) => {
-// 		if (variant.color && variant.size) {
-// 			const [color, colorCreated] = await Colour.findOrCreate({
-// 				where: { name: variant.color },
-// 			});
-
-// 			const [size, sizeCreated] = await Size.findOrCreate({
-// 				where: { name: variant.size },
-// 			});
-
-// 			const variantInstance = await ProductVariant.create({
-// 				stock: parseInt(variant.stock),
-// 			});
-
-// 			await variantInstance.setProduct(product);
-// 			await variantInstance.setColour(color);
-// 			await variantInstance.setSize(size);
-// 			return variantInstance;
-// 		} else {
-// 			return null; // Skip creating the variant if color or size is empty
-// 		}
-// 	});
-
-// 	await Promise.all(promises);
-// 	res.status(StatusCodes.CREATED).json(product);
-// };
 
 const deleteProduct = async (req, res) => {
 	const { id } = req.params;
@@ -369,19 +363,19 @@ const deleteProduct = async (req, res) => {
 		deletePicture(image.publicId);
 	});
 	await Promise.all(picturePromises);
-	const parsedImageData = product.image.map(JSON.parse);
-	const mainPicturePromises = parsedImageData.map(async (image) => {
-		deletePicture(image.publicId);
-	});
+	// const parsedImageData = product.image.map(JSON.parse);
+	// const mainPicturePromises = parsedImageData.map(async (image) => {
+	// 	deletePicture(image.publicId);
+	// });
 
-	await Promise.all(mainPicturePromises);
+	// await Promise.all(mainPicturePromises);
 
 	await product.destroy();
 	res.status(StatusCodes.OK).json({ message: 'Success! Product removed.' });
 };
 
 const publishProduct = async (req, res) => {
-	const { id } = req.body;
+	const id = req.params.id; // Get the value of the "id" parameter from the URL
 
 	try {
 		const product = await Product.findByPk(id);
@@ -405,7 +399,7 @@ const publishProduct = async (req, res) => {
 };
 
 const featureProduct = async (req, res) => {
-	const { id } = req.body;
+	const id = req.params.id; // Get the value of the "id" parameter from the URL
 
 	try {
 		const product = await Product.findByPk(id);
@@ -419,7 +413,7 @@ const featureProduct = async (req, res) => {
 		return res.status(StatusCodes.OK).json({
 			message: 'Product published state toggled successfully',
 			productId: id,
-			published: product.featured,
+			published: product.published,
 		});
 	} catch (error) {
 		return res

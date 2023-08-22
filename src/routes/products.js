@@ -49,7 +49,7 @@ router
 router
 	.route('/:id')
 	.get(getProductById)
-	.patch(updateProduct)
+	.patch([authenticateUser, authorizePermissions('admin')], updateProduct)
 	.delete([authenticateUser, authorizePermissions('admin')], deleteProduct);
 
 module.exports = router;

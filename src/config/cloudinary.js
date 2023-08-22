@@ -17,6 +17,9 @@ const uploadSingleImageFunc = async (imageFile, folder) => {
 	try {
 		const result = await cloudinary.uploader.upload(imageFile, {
 			folder: folder,
+			transformation: [
+				{ width: 553, height: 500, crop: 'fill' }, // Resize to 553x500 pixels
+			],
 		});
 		// Return an object containing secure_url and public_id
 		return {
@@ -34,7 +37,12 @@ const uploadMultipleImagesFunc = async (imageFiles, folder) => {
 	let item;
 	try {
 		const uploadPromises = imageFiles.map((imageFile) =>
-			cloudinary.uploader.upload(imageFile, { folder: folder })
+			cloudinary.uploader.upload(imageFile, {
+				folder: folder,
+				transformation: [
+					{ width: 553, height: 500, crop: 'fill' }, // Resize to 553x500 pixels
+				],
+			})
 		);
 		const results = await Promise.all(uploadPromises);
 

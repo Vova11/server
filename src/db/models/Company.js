@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
 			// Define the association with the Product model
 			Company.hasMany(models.Product, {
 				foreignKey: 'companyId',
+				as: 'products',
 			});
 		}
 	}
@@ -20,6 +21,14 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: 'Company',
+			hooks: {
+				beforeSave: (instance, options) => {
+					instance.name = instance.name.toLowerCase();
+				},
+				beforeUpdate: (instance, options) => {
+					instance.name = instance.name.toLowerCase();
+				},
+			},
 		}
 	);
 	return Company;

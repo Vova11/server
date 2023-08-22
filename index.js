@@ -3,7 +3,7 @@ require('dotenv').config({ path: `./.env.${process.env.NODE_ENV}` });
 const express = require('express');
 require('express-async-errors');
 const cors = require('cors');
-const PORT = 3002;
+const PORT = process.env.PORT || 3002;
 const notFoundMiddleware = require('./src/middleware/notFound');
 const errorHandlerMiddleware = require('./src/middleware/errorHandler');
 const app = express();
@@ -22,21 +22,11 @@ const limiter = rateLimit({
 app.use(limiter);
 app.use(helmet());
 const corsOptions = {
-	origin: 'http://localhost:3000',
+	origin: process.env.URI,
 	credentials: true, //access-control-allow-credentials:true
 	// optionSuccessStatus: 200,
 };
 
-// const corsOptions = {
-// 	origin: 'http://localhost:3000',
-// 	credentials: true,
-// 	allowedHeaders: [
-// 		'set-cookie',
-// 		'Content-Type',
-// 		'Access-Control-Allow-Origin',
-// 		'Access-Control-Allow-Credentials',
-// 	],
-// };
 app.use(cors(corsOptions));
 app.use(xss());
 if (process.env.NODE_ENV !== 'production') {
@@ -46,14 +36,6 @@ if (process.env.NODE_ENV !== 'production') {
 const cookieParser = require('cookie-parser');
 const { parseProductId } = require('./src/helpers/parseProductId.js');
 const { sequelize } = require('./src/db/models');
-
-// app.use(
-// 	cors({
-// 		origin: 'http://localhost:3001',
-// 		credentials: true,
-// 	})
-// );
-// Increase payload size limit
 
 app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser(process.env.JWT_SECRET));

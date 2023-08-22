@@ -21,5 +21,11 @@ module.exports = {
 		database: process.env.DB_NAME,
 		host: process.env.DB_HOST,
 		dialect: 'postgres',
+		dialectOptions: {
+			ssl: {
+				require: true, // This will help you. But you will see nwe error
+				rejectUnauthorized: false, // This line will fix new error
+			},
+		},
 	},
 };

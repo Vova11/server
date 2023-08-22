@@ -29,3 +29,4 @@ class Size extends Model {
     Size.belongsToMany(models.Product, { through: models.ProductSize, foreignKey: 'sizeId', as: 'products' });
   }
 }
+
