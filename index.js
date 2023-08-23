@@ -22,7 +22,7 @@ const limiter = rateLimit({
 app.use(limiter);
 app.use(helmet());
 const corsOptions = {
-	origin: process.env.URI,
+	origin: `${process.env.URI}`,
 	credentials: true, //access-control-allow-credentials:true
 	// optionSuccessStatus: 200,
 };
@@ -75,6 +75,7 @@ const startTheApp = async () => {
 	try {
 		await sequelize.authenticate();
 		console.log('Connection to database has been established successfully.');
+		console.log(process.env.URI);
 		// sequelize.queryInterface
 		// 	.dropAllTables()
 		// 	.then(() => console.log('All tables dropped'))

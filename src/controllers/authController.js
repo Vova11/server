@@ -14,45 +14,42 @@ const crypto = require('crypto');
 
 const register = async (req, res) => {
 	const { firstName, email, password } = req.body;
-	console.log(req.body);
-	try {
-		const emailExists = await User.findOne({ where: { email } });
 
-		if (emailExists) {
-			throw new CustomError.BadRequestError('Email already exists');
-		}
-		const userCount = await User.count();
-		let userRole = 'user';
-		if (userCount === 0) {
-			userRole = 'admin';
-		}
+	const emailExists = await User.findOne({ where: { email } });
 
-		const verificationToken = crypto.randomBytes(40).toString('hex');
-
-		const user = await User.create({
-			firstName,
-			email,
-			password,
-			role: userRole,
-			verificationToken,
-		});
-
-		const origin = process.env.URI;
-		// const origin = 'http://127.0.0.1:5173';
-		await sendVerificationEmail({
-			name: user.firstName,
-			email: user.email,
-			verificationToken: user.verificationToken,
-			origin,
-		});
-		// const tokenUser = createTokenUser(user);
-		// attachCookiesToResponse({ res, user: tokenUser });
-		res
-			.status(StatusCodes.CREATED)
-			.json({ msg: 'Success!, Please check your email to verify account.' });
-	} catch (error) {
-		console.log(error);
+	if (emailExists) {
+		throw new CustomError.BadRequestError('Email already exists');
+		return;
 	}
+	const userCount = await User.count();
+	let userRole = 'user';
+	if (userCount === 0) {
+		userRole = 'admin';
+	}
+
+	const verificationToken = crypto.randomBytes(40).toString('hex');
+
+	const user = await User.create({
+		firstName,
+		email,
+		password,
+		role: userRole,
+		verificationToken,
+	});
+
+	const origin = `${process.env.URI}`;
+	// const origin = 'http://localhost:3000';
+	await sendVerificationEmail({
+		name: user.firstName,
+		email: user.email,
+		verificationToken: user.verificationToken,
+		origin,
+	});
+	// const tokenUser = createTokenUser(user);
+	// attachCookiesToResponse({ res, user: tokenUser });
+	res
+		.status(StatusCodes.CREATED)
+		.json({ msg: 'Success!, Please check your email to verify account.' });
 };
 
 const login = async (req, res) => {
@@ -167,7 +164,8 @@ const forgotPassword = async (req, res) => {
 	if (user) {
 		const passwordToken = crypto.randomBytes(70).toString('hex');
 		// send email
-		const origin = process.env.URI;
+		const origin = `${process.env.URI}`;
+		// const origin = 'http://localhost:3000';
 		await sendResetPasswordEmail({
 			name: user.name,
 			email: user.email,

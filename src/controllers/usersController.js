@@ -21,7 +21,7 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
 	const { id } = req.params;
-	console.log('tu si');
+	console.log('Show method who is user: ', id);
 	const user = await User.findByPk(id, {
 		attributes: {
 			exclude: [
