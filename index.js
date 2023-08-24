@@ -11,7 +11,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const morgan = require('morgan');
-app.set('trust proxy', 1);
+// app.set('trust proxy', 1);
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
 	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
@@ -22,7 +22,7 @@ const limiter = rateLimit({
 app.use(limiter);
 app.use(helmet());
 const corsOptions = {
-	origin: `${process.env.URI}`,
+	origin: 'localhost:3000',
 	credentials: true, //access-control-allow-credentials:true
 	// optionSuccessStatus: 200,
 };
@@ -75,7 +75,6 @@ const startTheApp = async () => {
 	try {
 		await sequelize.authenticate();
 		console.log('Connection to database has been established successfully.');
-		console.log(process.env.URI);
 		// sequelize.queryInterface
 		// 	.dropAllTables()
 		// 	.then(() => console.log('All tables dropped'))
