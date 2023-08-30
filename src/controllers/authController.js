@@ -53,11 +53,6 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-	console.log('tu sisss');
-	console.log('kurvaaaaa');
-	console.log(('ip ', req.ip));
-	console.log('agent ', req.headers['user-agent']);
-
 	const { email, password } = req.body;
 
 	if (!email || !password) {
@@ -98,7 +93,6 @@ const login = async (req, res) => {
 			user: tokenUser,
 			refreshToken,
 		});
-
 		res.status(StatusCodes.OK).json({ user: tokenUser });
 		return;
 	}
