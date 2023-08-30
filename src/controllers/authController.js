@@ -37,7 +37,7 @@ const register = async (req, res) => {
 		verificationToken,
 	});
 
-	const origin = `${process.env.URI}`;
+	const origin = process.env.URI;
 	// const origin = 'http://localhost:3000';
 	await sendVerificationEmail({
 		name: user.firstName,
@@ -53,7 +53,10 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-	console.log(process.env.JWT_SECRET);
+	console.log('tu sisss');
+	console.log('kurvaaaaa');
+	console.log(('ip ', req.ip));
+	console.log('agent ', req.headers['user-agent']);
 
 	const { email, password } = req.body;
 
@@ -89,7 +92,7 @@ const login = async (req, res) => {
 		if (!isValid) {
 			throw new CustomError.UnauthenticatedError('Invalid credentials');
 		}
-		refreshToken = existingToken.refreshToken;
+		// refreshToken = existingToken.refreshToken;
 		attachCookiesToResponse({
 			res,
 			user: tokenUser,
@@ -105,8 +108,9 @@ const login = async (req, res) => {
 	const userAgent = req.headers['user-agent'];
 	const ip = req.ip;
 	const userToken = { refreshToken, ip, userAgent, userId: user.id };
+
 	await Token.create(userToken);
-	// refreshToken = existingToken.refreshToken
+	//refreshToken = existingToken.refreshToken;
 	attachCookiesToResponse({
 		res,
 		user: tokenUser,
@@ -164,7 +168,7 @@ const forgotPassword = async (req, res) => {
 	if (user) {
 		const passwordToken = crypto.randomBytes(70).toString('hex');
 		// send email
-		const origin = `${process.env.URI}`;
+		const origin = process.env.URI;
 		// const origin = 'http://localhost:3000';
 		await sendResetPasswordEmail({
 			name: user.name,

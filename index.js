@@ -17,14 +17,17 @@ const limiter = rateLimit({
 	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
 	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+	message: 'Please try again later!',
 });
 
 app.use(limiter);
 app.use(helmet());
+
 const corsOptions = {
-	origin: `${process.env.URI}`,
-	credentials: true, //access-control-allow-credentials:true
-	// optionSuccessStatus: 200,
+	credentials: true,
+	origin: process.env.URI,
+	optionsSuccessStatus: 200,
+	sameSite: 'none',
 };
 
 app.use(cors(corsOptions));
@@ -79,7 +82,7 @@ const startTheApp = async () => {
 		// sequelize.queryInterface
 		// 	.dropAllTables()
 		// 	.then(() => console.log('All tables dropped'))
-		// 	.catch((err) => console.log(err));
+		// .catch((err) => console.log(err));
 		// Start the server
 		await sequelize.sync();
 		app.listen(PORT, () => {

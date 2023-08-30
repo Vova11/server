@@ -24,32 +24,47 @@ const {
 router
 	.route('/')
 	.get(getAllProducts)
-	.post([authenticateUser, authorizePermissions('admin')], createProduct);
+	.post(
+		[authenticateUser, authorizePermissions('admin', 'user')],
+		createProduct
+	);
 router
 	.route('/uploadImage')
-	.post([authenticateUser, authorizePermissions('admin')], uploadImage);
+	.post([authenticateUser, authorizePermissions('admin', 'user')], uploadImage);
 router
 	.route('/removeImage')
-	.post([authenticateUser, authorizePermissions('admin')], removeImage);
+	.post([authenticateUser, authorizePermissions('admin', 'user')], removeImage);
 
 router
 	.route('/uploadMultipleImages')
 	.post(
-		[authenticateUser, authorizePermissions('admin')],
+		[authenticateUser, authorizePermissions('admin', 'user')],
 		uploadMultipleImages
 	);
 
 router
 	.route('/publish/:id')
-	.patch([authenticateUser, authorizePermissions('admin')], publishProduct);
+	.patch(
+		[authenticateUser, authorizePermissions('admin', 'user')],
+		publishProduct
+	);
 router
 	.route('/featured/:id')
-	.patch([authenticateUser, authorizePermissions('admin')], featureProduct);
+	.patch(
+		[authenticateUser, authorizePermissions('admin', 'user')],
+		featureProduct
+	);
 
 router
 	.route('/:id')
 	.get(getProductById)
-	.patch([authenticateUser, authorizePermissions('admin')], updateProduct)
-	.delete([authenticateUser, authorizePermissions('admin')], deleteProduct);
+	.patch(
+		[authenticateUser, authorizePermissions('admin', 'user')],
+		updateProduct
+	)
+	.delete(
+		[authenticateUser, authorizePermissions('admin', 'user')],
+		deleteProduct
+	);
 
 module.exports = router;

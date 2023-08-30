@@ -22,30 +22,36 @@ const index = async (req, res) => {
 const show = async (req, res) => {
 	const { id } = req.params;
 	console.log('Show method who is user: ', id);
-	const user = await User.findByPk(id, {
-		attributes: {
-			exclude: [
-				'password',
-				'role',
-				'createdAt',
-				'updatedAt',
-				'isVerified',
-				'verified',
-				'verificationToken',
-				'passwordToken',
-				'passwordTokenExpirationDate',
-			],
-		},
-	});
+	try {
+		const user = await User.findByPk(id, {
+			attributes: {
+				exclude: [
+					'password',
+					'role',
+					'createdAt',
+					'updatedAt',
+					'isVerified',
+					'verified',
+					'verificationToken',
+					'passwordToken',
+					'passwordTokenExpirationDate',
+				],
+			},
+		});
 
-	if (!user) {
-		throw new CustomError.NotFoundError(`No user with id: ${req.params.id}`);
+		if (!user) {
+			throw new CustomError.NotFoundError(`No user with id: ${req.params.id}`);
+		}
+		checkPermissions(req.user, user.id);
+		res.status(StatusCodes.OK).json({ user });
+	} catch (error) {
+		console.log(error);
+		res.status(StatusCodes.OK).json({ error });
 	}
-	checkPermissions(req.user, user.id);
-	res.status(StatusCodes.OK).json({ user });
 };
 
 const showCurrentUser = async (req, res) => {
+	console.log(req.user);
 	res.status(StatusCodes.OK).json({ user: req.user });
 };
 
