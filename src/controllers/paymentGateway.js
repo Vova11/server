@@ -55,7 +55,7 @@ const loadPayment = async (req, res) => {
 				},
 			}
 		);
-		res.json(response.data);
+		// res.json(response.data);
 		// const redirectUrl = response.request.res.responseUrl;
 		// res.redirect(redirectUrl);
 		// console.log(response);
@@ -64,8 +64,8 @@ const loadPayment = async (req, res) => {
 		// 	url: response.request.res.responseUrl,
 		// 	status: response.request.res.statusCode,
 		// });
-		// res.redirect(response.request.res.responseUrl);
 		// res.status(200).json(response.data);
+		res.redirect(response.request.res.responseUrl);
 	} catch (error) {
 		console.error('Error making POST request:', error);
 		res.status(500).json({ error: 'An error occurred' });

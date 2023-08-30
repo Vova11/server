@@ -51,7 +51,6 @@ const show = async (req, res) => {
 };
 
 const showCurrentUser = async (req, res) => {
-	console.log(req.user);
 	res.status(StatusCodes.OK).json({ user: req.user });
 };
 
