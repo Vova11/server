@@ -1,16 +1,18 @@
 require('dotenv').config({ path: `./.env.${process.env.NODE_ENV}` });
-
 const express = require('express');
 require('express-async-errors');
 const cors = require('cors');
-const PORT = process.env.PORT || 3002;
 const notFoundMiddleware = require('./src/middleware/notFound');
 const errorHandlerMiddleware = require('./src/middleware/errorHandler');
+const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
 const app = express();
+const PORT = process.env.PORT || 3002;
+
+//FOR PRODUCTION
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const xss = require('xss-clean');
-const morgan = require('morgan');
 app.set('trust proxy', 1);
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
@@ -19,24 +21,20 @@ const limiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 	message: 'Please try again later!',
 });
-
 app.use(limiter);
 app.use(helmet());
 
 const corsOptions = {
-	credentials: true,
 	origin: process.env.URI,
-	optionsSuccessStatus: 200,
+	credentials: true,
 	sameSite: 'none',
 };
-
 app.use(cors(corsOptions));
 app.use(xss());
 if (process.env.NODE_ENV !== 'production') {
 	app.use(morgan('tiny'));
 }
 
-const cookieParser = require('cookie-parser');
 const { parseProductId } = require('./src/helpers/parseProductId.js');
 const { sequelize } = require('./src/db/models');
 

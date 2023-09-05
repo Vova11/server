@@ -7,10 +7,7 @@ const {
 	createOrder,
 	updateOrder,
 } = require('../controllers/orderController');
-const {
-	loadPayment,
-	goToEternalWebsite,
-} = require('../controllers/paymentGateway');
+const { paymentgw } = require('../controllers/paymentGateway');
 const {
 	authenticateUser,
 	authorizePermissions,
@@ -21,8 +18,6 @@ router
 	.post(createOrder)
 	.get(authenticateUser, authorizePermissions('admin'), getAllOrders);
 
-router.route('/redirectMe').get(goToEternalWebsite);
-
 router
 	.route('/showAllMyOrders')
 	.get([authenticateUser, authorizePermissions], getCurrentUserOrders);
@@ -32,6 +27,6 @@ router
 	.get(authenticateUser, authorizePermissions('admin'), getSingleOrder)
 	.patch([authenticateUser, authorizePermissions('admin')], updateOrder);
 
-router.route('/pay').post(loadPayment);
+router.route('/paymentgw').post(paymentgw);
 
 module.exports = router;

@@ -174,6 +174,7 @@ const updateProduct = async (req, res) => {
 		colour,
 		hexColourCode,
 	} = req.body;
+
 	const product = await Product.findByPk(id, {
 		include: [
 			{
@@ -248,19 +249,17 @@ const updateProduct = async (req, res) => {
 	});
 
 	// Remove any variants that were not included in the updated variants
-	// await ProductVariant.destroy({
-	// 	where: {
-	// 		id: product.id,
-	// 		id: { [Op.notIn]: variantIds },
-	// 	},
-	// });
+	await ProductVariant.destroy({
+		where: {
+			id: product.id,
+			id: { [Op.notIn]: variantIds },
+		},
+	});
 	// Add new images to the product
 	const updatedPictures = await createPictures(images, product.id);
 	await product.setProduct_pictures(updatedPictures);
 	await product.save();
 
-	// Respond with the updated product
-	console.log(product);
 	res
 		.status(StatusCodes.OK)
 		.json({ message: 'Product updated successfully', product });

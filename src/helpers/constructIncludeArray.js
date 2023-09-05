@@ -27,6 +27,11 @@ const constructIncludeArray = (company) => {
 			as: 'colour',
 			attributes: ['name', 'hexColourCode'],
 		},
+		{
+			model: Company,
+			as: 'company',
+			attributes: ['name'],
+		},
 	];
 
 	if (company !== 'all') {
