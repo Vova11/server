@@ -34,30 +34,25 @@ class Request24pay {
 const paymentgw = async (req, res) => {
 	const { data } = req.body;
 	const request24pay = new Request24pay(Mid, EshopId, Key);
-
 	const stringAmount1 = data.Amount;
 	const floatAmount1 = parseFloat(stringAmount1);
 	const message = `${data.Mid}${floatAmount1.toFixed(2)}${data.CurrAlphaCode}${
 		data.MsTxnId
 	}${data.FirstName}${data.FamilyName}${data.Timestamp}`;
 	const signature = request24pay.sign(message);
+	data.Amount = data.Amount.toFixed(2);
+	data.Country = 'SVK';
+	data.Mid = Mid;
+	data.EshopId = EshopId;
 	data.Sign = signature;
+	data.lastName = data.FamilyName;
 	try {
-		console.log(data);
-		const response = await axios.post(
-			'https://test.24-pay.eu/pay_gate/paygt',
-			data,
-			{
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
-			}
-		);
 		res.status(200).json(data);
 	} catch (error) {
 		console.error('Error making POST request:', error);
 		res.status(500).json({ error: 'An error occurred' });
 	}
+	res.status(200);
 };
 
 module.exports = {

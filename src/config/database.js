@@ -4,7 +4,7 @@ module.exports = {
 	development: {
 		username: 'postgres',
 		password: 'password',
-		database: 'eshop_db',
+		database: 'vapeshop',
 		host: 'localhost',
 		dialect: 'postgres',
 	},

@@ -1,0 +1,926 @@
+[
+  {
+    "name": "GEEKBAR Watermelon Ice",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-watermelon-ice/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-watermelon-ice.png",
+    "price": "5.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-watermelon-ice.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2.0ml",
+      "battery": "500mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-watermelon-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-watermelon-ice.png"
+  },
+  {
+    "name": "GEEKBAR Sweet Strawberry",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-sweet-strawberry/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-sweet-strawberry.png",
+    "price": "5.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-sweet-strawberry.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-sweet-strawberry.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-sweet-strawberry.png"
+  },
+  {
+    "name": "GEEKBAR Blueberry Ice",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-blueberry-ice/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-blueberry-ice.png",
+    "price": "5.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-blueberry-ice.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-blueberry-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-blueberry-ice.png"
+  },
+  {
+    "name": "GEEKBAR Banana Ice",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-banana-ice/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-banana-ice.png",
+    "price": "5.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-banana-ice.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-banana-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-banana-ice.png"
+  },
+  {
+    "name": "GEEKBAR Mango Ice Zero",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-mango-ice-zero/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-mango-ice.png",
+    "price": "5.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-mango-ice.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "0 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "nie"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-mango-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-mango-ice.png"
+  },
+  {
+    "name": "DRAGBAR RASPBERRY WATERMELON",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-raspberry-watermelon/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-raspberry-watermelon.png",
+    "price": "5.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-raspberry-watermelon.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-raspberry-watermelon.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-raspberry-watermelon.png"
+  },
+  {
+    "name": "GEEKBAR Passion fruit",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-passion-fruit/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-passion-fruit.png",
+    "price": "5.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-passion-fruit.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "20mg",
+      "eLiquidVolume": "6.0ml",
+      "battery": "650mAh"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-passion-fruit.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-passion-fruit.png"
+  },
+  {
+    "name": "GEEKBAR Peach Ice",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-peach-ice/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-peach-ice.png",
+    "price": "5.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-peach-ice.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2.0ml",
+      "battery": "500mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-peach-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-peach-ice.png"
+  },
+  {
+    "name": "DRAGBAR DRAGBULL",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-dragbull/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-drag-bull.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-drag-bull.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-drag-bull.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-drag-bull.png"
+  },
+  {
+    "name": "DRAGBAR DRAGON FRUIT LEMONADE",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-dragon-fruit-lemonade/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-dragon-fruit-lemonade.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-dragon-fruit-lemonade.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-dragon-fruit-lemonade.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-dragon-fruit-lemonade.png"
+  },
+  {
+    "name": "DRAGBAR ORANGE JUICE",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-orange-juice/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-orange-juice.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-orange-juice.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-orange-juice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-orange-juice.png"
+  },
+  {
+    "name": "DRAGBAR PINEAPPLE ICE",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-pineapple-ice/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-pineapple-ice.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-pineapple-ice.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-pineapple-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-pineapple-ice.png"
+  },
+  {
+    "name": "DRAGBAR SEA SALT GRAPEFRUIT",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-sea-salt-grapefruit/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-sea-salt-grapefruitovo.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-sea-salt-grapefruitovo.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-sea-salt-grapefruitovo.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-sea-salt-grapefruitovo.png"
+  },
+  {
+    "name": "DRAGBAR STRAWBERRY RASPBERRY CHERRY",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-strawberry-raspberry-cherry/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-strawberry-raspberry-cgerry.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-strawberry-raspberry-cgerry.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-strawberry-raspberry-cgerry.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-strawberry-raspberry-cgerry.png"
+  },
+  {
+    "name": "DRAGBAR ALOE GRAPE",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-aloe-grape/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-aloe-grape.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-aloe-grape.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-aloe-grape.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-aloe-grape.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Blueberry Sour Raspberry ",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-blueberry-sour-raspberry/",
+    "imageMedium": "https://evapify.sk/uploads/medium/blueberry-sour-raspberry.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/blueberry-sour-raspberry.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "nie"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/blueberry-sour-raspberry.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/blueberry-sour-raspberry.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Watermelon Ice",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-watermelon-ice/",
+    "imageMedium": "https://evapify.sk/uploads/medium/watermelon-ice.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/watermelon-ice.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "nie"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/watermelon-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/watermelon-ice.png"
+  },
+  {
+    "name": "GEKKBAR Meloso Tobacco",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/gekkbar-meloso-tobacco/",
+    "imageMedium": "https://evapify.sk/uploads/medium/tobacco.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/tobacco.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "nie"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/tobacco.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/tobacco.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Kiwi Passion Fruit",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-meloso-kiwi-passion-fruit/",
+    "imageMedium": "https://evapify.sk/uploads/medium/kiwi-passion-fruit.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/kiwi-passion-fruit.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "nie"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/kiwi-passion-fruit.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/kiwi-passion-fruit.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Peach Ice",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-peach-ice/",
+    "imageMedium": "https://evapify.sk/uploads/medium/peach-ice.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/peach-ice.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "nie"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/peach-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/peach-ice.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Menthol",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-menthol/",
+    "imageMedium": "https://evapify.sk/uploads/medium/menthol.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/menthol.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "nie"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/menthol.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/menthol.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Sour Apple",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-sour-apple/",
+    "imageMedium": "https://evapify.sk/uploads/medium/sour-apple.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/sour-apple.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "nie"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/sour-apple.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/sour-apple.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Strawberry Ice",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-strawberry-ice/",
+    "imageMedium": "https://evapify.sk/uploads/medium/strawberry-ice.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/strawberry-ice.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500",
+      "nicotine": "áno",
+      "multipack": "nie"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/strawberry-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/strawberry-ice.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Mango Ice ZERO",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-mango-ice/",
+    "imageMedium": "https://evapify.sk/uploads/medium/mango-ice.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/mango-ice.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "0 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "nie",
+      "multipack": "nie"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/mango-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/mango-ice.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Blueberry Ice ZERO",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-strawberry-ice-1/",
+    "imageMedium": "https://evapify.sk/uploads/medium/blueberry-ice.png",
+    "price": "6.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/blueberry-ice.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "0 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "nie",
+      "multipack": "nie"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/blueberry-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/blueberry-ice.png"
+  },
+  {
+    "name": "GEEKBAR Passion fruit 10PACK",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-passion-fruit-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-box-passion-fruit.png",
+    "price": "44.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-box-passion-fruit.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-box-passion-fruit.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-box-passion-fruit.png"
+  },
+  {
+    "name": "GEEKBAR Mango Ice Zero 10pack",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-mango-ice-zero-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-box-mango-ice-zero.png",
+    "price": "44.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-box-mango-ice-zero.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "0 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "nie",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-box-mango-ice-zero.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-box-mango-ice-zero.png"
+  },
+  {
+    "name": "GEEKBAR Peach Ice 10PACK",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-peach-ice-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-box-peach-ice.png",
+    "price": "44.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-box-peach-ice.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-box-peach-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-box-peach-ice.png"
+  },
+  {
+    "name": "GEEKBAR Banana Ice 10PACK",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-banana-ice-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-box-banana-ice-1-.png",
+    "price": "44.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-box-banana-ice-1-.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-box-banana-ice-1-.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-box-banana-ice-1-.png"
+  },
+  {
+    "name": "GEEKBAR Sweet Strawberry 10PACK",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-sweet-strawberry-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-box-sweet-strawberry.png",
+    "price": "44.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-box-sweet-strawberry.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-box-sweet-strawberry.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-box-sweet-strawberry.png"
+  },
+  {
+    "name": "GEEKBAR Watermelon Ice 10PACK",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-watermelon-ice-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-box-watermelon-ice.png",
+    "price": "44.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-box-watermelon-ice.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-box-watermelon-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-box-watermelon-ice.png"
+  },
+  {
+    "name": "GEEKBAR Blueberry Ice 10PACK",
+    "company": "Geek bar",
+    "link": "https://evapify.sk/geekbar-blueberry-ice-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/geek-bar-box-blueberry-ice.png",
+    "price": "44.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/geek-bar-box-blueberry-ice.png"
+    ],
+    "details": {
+      "puffs": "575",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/geek-bar-box-blueberry-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/geek-bar-box-blueberry-ice.png"
+  },
+  {
+    "name": "DRAGBAR SEA SALT GRAPEFRUIT 10PACK",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-sea-salt-grapefruit-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-box-sea-salt-grapefruit.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-box-sea-salt-grapefruit.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20 mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-box-sea-salt-grapefruit.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-box-sea-salt-grapefruit.png"
+  },
+  {
+    "name": "DRAGBAR Rasberry Watermelon 10PACK",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-rasberry-watermelon-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-box-raspberry-watermelon.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-box-raspberry-watermelon.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-box-raspberry-watermelon.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-box-raspberry-watermelon.png"
+  },
+  {
+    "name": "DRAGBAR Pineapple Ice 10PACK",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-pineapple-ice-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-box-pineapple-ice.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-box-pineapple-ice.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-box-pineapple-ice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-box-pineapple-ice.png"
+  },
+  {
+    "name": "DRAGBAR Aloe Grape 10PACK",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-aloe-grape-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-box-aloe-grape.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-box-aloe-grape.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-box-aloe-grape.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-box-aloe-grape.png"
+  },
+  {
+    "name": "DRAGBAR Strawberry Rasberry Cherry 10PACK",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-strawberry-rasberry-cherry-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-box-strawberry-raspberry-cherry.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-box-strawberry-raspberry-cherry.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-box-strawberry-raspberry-cherry.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-box-strawberry-raspberry-cherry.png"
+  },
+  {
+    "name": "DRAGBAR Orange Juice 10PACK",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-orange-juice-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-box-orange-juice.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-box-orange-juice.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-box-orange-juice.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-box-orange-juice.png"
+  },
+  {
+    "name": "DRAGBAR Dragon Fruit Lemonade 10PACK",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-dragon-fruit-lemonade-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-box-dragon-fruit-lemonade.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-box-dragon-fruit-lemonade.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-box-dragon-fruit-lemonade.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-box-dragon-fruit-lemonade.png"
+  },
+  {
+    "name": "DRAGBAR Drag Bull 10PACK",
+    "company": "Dragbar",
+    "link": "https://evapify.sk/dragbar-drag-bull-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/dragbar-box-drag-bull.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/dragbar-box-drag-bull.png"
+    ],
+    "details": {
+      "puffs": "700",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "380mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/dragbar-box-drag-bull.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/dragbar-box-drag-bull.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Blueberry Sour Raspberry 10PACK",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-blueberry-sour-raspberry-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/blueberry-sour-raspberry-pack.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/blueberry-sour-raspberry-pack.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/blueberry-sour-raspberry-pack.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/blueberry-sour-raspberry-pack.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Watermelon Ice 10PACK",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-watermelon-ice-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/watermalon-ice-pack.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/watermalon-ice-pack.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/watermalon-ice-pack.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/watermalon-ice-pack.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Kiwi Passion Fruit 10PACK",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-kiwi-passion-fruit-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/kiwi-passion-fruit-pack.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/kiwi-passion-fruit-pack.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/kiwi-passion-fruit-pack.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/kiwi-passion-fruit-pack.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Peach Ice 10PACK",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-peach-ice-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/peach-ice-pack.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/peach-ice-pack.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/peach-ice-pack.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/peach-ice-pack.png"
+  },
+  {
+    "name": "GEEKBAR Meloso  Menthol 10PACK",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-menthol-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/menthol-pack.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/menthol-pack.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/menthol-pack.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/menthol-pack.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Sour Apple 10PACK",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-sour-apple-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/sour-apple-pack.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/sour-apple-pack.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/sour-apple-pack.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/sour-apple-pack.png"
+  },
+  {
+    "name": "GEEKBAR Meloso Strawberry Ice 10PACK",
+    "company": "GEEKBAR Meloso",
+    "link": "https://evapify.sk/geekbar-meloso-strawberry-ice-10pack/",
+    "imageMedium": "https://evapify.sk/uploads/medium/strawberry-ice-pack.png",
+    "price": "54.90",
+    "images": [
+      "https://evapify.sk/uploads/medium/strawberry-ice-pack.png"
+    ],
+    "details": {
+      "puffs": "600",
+      "nicotineSaltQuantity": "20mg/ml",
+      "eLiquidVolume": "2 ml",
+      "battery": "500mAh",
+      "nicotine": "áno",
+      "multipack": "áno"
+    },
+    "imageSmall": "https://evapify.sk/uploads/image_bank/strawberry-ice-pack.png",
+    "imageBig": "https://evapify.sk/uploads/image_bank/strawberry-ice-pack.png"
+  }
+]

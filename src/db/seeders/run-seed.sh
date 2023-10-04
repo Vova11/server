@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export CLOUDINARY_NAME=dfovd2bc6
+export CLOUDINARY_API_KEY=994372322266596
+export CLOUDINARY_API_SECRET=w6bpOJp20kZgjqPWeOVUjNueHL0
+
+node seed.js

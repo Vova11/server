@@ -74,10 +74,28 @@ module.exports = (sequelize, DataTypes) => {
 			averageRating: DataTypes.FLOAT,
 			numberOfReviews: DataTypes.INTEGER,
 			companyId: DataTypes.INTEGER,
+			puffs: DataTypes.STRING,
+			nicotineSaltQuantity: DataTypes.STRING,
+			eLiquidVolume: DataTypes.STRING,
+			battery: DataTypes.STRING,
+			nicotine: DataTypes.BOOLEAN,
+			multipack: DataTypes.BOOLEAN,
 		},
 		{
 			sequelize,
 			modelName: 'Product',
+			indexes: [
+				// Index on the 'name' field
+				{
+					unique: true, // If you want it to be a unique index
+					fields: ['name'],
+				},
+				// Index on the 'id' field
+				{
+					fields: ['id'],
+				},
+				// You can define more indexes here if needed
+			],
 		}
 	);
 	return Product;

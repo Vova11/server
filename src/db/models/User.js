@@ -56,6 +56,18 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: 'User',
+			indexes: [
+				// Index on the 'name' field
+				{
+					unique: true, // If you want it to be a unique index
+					fields: ['email'],
+				},
+				// Index on the 'id' field
+				{
+					fields: ['id'],
+				},
+				// You can define more indexes here if needed
+			],
 		}
 	);
 

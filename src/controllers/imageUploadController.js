@@ -69,26 +69,6 @@ const removeImage = async (req, res) => {
 	}
 };
 
-// const uploadImageBackUp = async (req, res) => {
-// 	const dataUrl = req.body.image;
-// 	const [dataType, base64Data] = dataUrl.split(',');
-// 	const mimeType = dataType.split(':')[1].split(';')[0];
-// 	const imageFormat = mimeType.split('/')[1];
-// 	const decodedData = Buffer.from(base64Data, 'base64');
-// 	console.log(mimeType);
-// 	console.log(imageFormat);
-// 	console.log(decodedData);
-// 	const fileSizeInBytes = decodedData.length;
-// 	const fileSizeInKilobytes = fileSizeInBytes / 1024;
-// 	const fileSizeInMegabytes = fileSizeInKilobytes / 1024;
-
-// 	console.log('File Size in Bytes:', fileSizeInBytes);
-// 	console.log('File Size in Kilobytes:', fileSizeInKilobytes);
-// 	console.log('File Size in Megabytes:', fileSizeInMegabytes);
-// 	// const result = await uploadSingleImage(req.body.image);
-// 	// console.log('image url is: ' + result);
-// 	// res.status(200).json({ msg: 'image uploaded' });
-// };
 module.exports = {
 	uploadImage,
 	uploadMultipleImages,

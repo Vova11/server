@@ -30,7 +30,12 @@ const createVariants = async (variants, productId) => {
 	const filteredVariants = createdVariants.filter(
 		(variant) => variant !== undefined
 	);
-	return filteredVariants;
+	// Sort the createdVariants array by createdAt in ascending order
+	const sortedVariants = filteredVariants.sort((a, b) => {
+		return new Date(a.createdAt) - new Date(b.createdAt);
+	});
+
+	return sortedVariants;
 };
 
 module.exports = { createVariants };

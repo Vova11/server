@@ -23,7 +23,8 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 app.use(helmet());
-
+app.use(express.static('./public'));
+app.use('/invoices', express.static('./invoices'));
 const corsOptions = {
 	origin: process.env.URI,
 	credentials: true,
@@ -74,13 +75,14 @@ app.use(errorHandlerMiddleware);
 
 const startTheApp = async () => {
 	try {
+		// Create the database if it doesn't exist
 		await sequelize.authenticate();
 		console.log('Connection to database has been established successfully.');
 		console.log(process.env.URI);
 		// sequelize.queryInterface
 		// 	.dropAllTables()
 		// 	.then(() => console.log('All tables dropped'))
-		// .catch((err) => console.log(err));
+		// 	.catch((err) => console.log(err));
 		// Start the server
 		await sequelize.sync();
 		app.listen(PORT, () => {

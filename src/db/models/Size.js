@@ -29,6 +29,11 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Size.init(
 		{
+			id: {
+				type: DataTypes.INTEGER, // or another appropriate data type
+				primaryKey: true, // Specify this column as the primary key
+				autoIncrement: true, // If it's an auto-incrementing primary key
+			},
 			name: DataTypes.STRING,
 		},
 		{

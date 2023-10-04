@@ -24,12 +24,15 @@ const getAllProducts = async (req, res) => {
 	const {
 		page = 1,
 		skip = 0,
-		limit = 10,
+		limit = 20,
 		published,
 		featured,
 		sort,
 		company,
+		search,
+		nicotine,
 	} = req.query;
+	console.log('Nikotin je', nicotine);
 
 	const [sortColumn, sortOrder] = sortOptions[sort] || sortOptions['latest'];
 	const offset = (page - 1) * limit + parseInt(skip);
@@ -53,6 +56,21 @@ const getAllProducts = async (req, res) => {
 	if (company !== 'all') {
 		whereCondition['$company.name$'] = { [Op.eq]: company };
 	}
+
+	if (search) {
+		whereCondition.name = {
+			[Op.iLike]: `%${search}%`,
+		};
+	}
+
+	if (nicotine === 'all') {
+		// No filter on nicotine, include both true and false values
+		whereCondition.nicotine = { [Op.in]: [true, false] };
+	} else {
+		// Filter products by the specific nicotine value
+		whereCondition.nicotine = nicotine === 'true';
+	}
+
 	try {
 		const includeAssociatedModels = constructIncludeArray(company);
 		const products = await Product.findAndCountAll({
@@ -82,7 +100,8 @@ const getAllProducts = async (req, res) => {
 			companies: uniqueCompanyNames,
 		});
 	} catch (error) {
-		return res
+		console.log(error);
+		res
 			.status(StatusCodes.INTERNAL_SERVER_ERROR)
 			.json({ message: 'Failed to load products' });
 	}
@@ -90,80 +109,205 @@ const getAllProducts = async (req, res) => {
 
 const getProductById = async (req, res) => {
 	const { id: productId } = req.params;
-
-	const product = await Product.findByPk(productId, {
-		include: [
-			{
-				model: Size,
-				as: 'product_sizes',
-				attributes: ['id', 'name'],
-				through: {
-					model: ProductVariant,
-					attributes: ['stock'],
+	console.log(productId);
+	try {
+		const product = await Product.findByPk(productId, {
+			include: [
+				{
+					model: Size,
+					as: 'product_sizes',
+					attributes: ['id', 'name'],
+					through: {
+						model: ProductVariant,
+						attributes: ['stock'],
+					},
 				},
-			},
-			{
-				model: ProductVariant,
-				as: 'product_variants',
-			},
-			{
-				model: Picture,
-				as: 'product_pictures',
-				attributes: ['id', 'publicId', 'url'],
-			},
-			{
-				model: Company,
-				as: 'company',
-				attributes: ['name'],
-			},
-			{
-				model: Colour,
-				as: 'colour',
-				attributes: ['name', 'hexColourCode'],
-			},
-			{
-				model: Review,
-				as: 'reviews',
-				attributes: ['id', 'title', 'comment'],
-			},
-		],
-	});
+				{
+					model: ProductVariant,
+					as: 'product_variants',
+				},
+				{
+					model: Picture,
+					as: 'product_pictures',
+					attributes: ['id', 'publicId', 'url'],
+				},
+				{
+					model: Company,
+					as: 'company',
+					attributes: ['name'],
+				},
+				{
+					model: Colour,
+					as: 'colour',
+					attributes: ['name', 'hexColourCode'],
+				},
+				{
+					model: Review,
+					as: 'reviews',
+					attributes: ['id', 'title', 'comment'],
+				},
+			],
+		});
 
-	const data = {
-		id: product.id,
-		name: product.name,
-		description: product.description,
-		price: product.price,
-		freeShipping: product.freeShipping,
-		published: product.published,
-		featured: product.featured,
-		averageRating: product.averageRating,
-		image: product.image,
-		numberOfReviews: product.numberOfReviews,
-		variants: [],
-		images: product.product_pictures,
-		company: product.company,
-		colour: product.colour.name,
-		hexColourCode: product.colour.hexColourCode,
-		reviews: product.reviews,
-	};
-
-	product.product_variants.forEach((variant) => {
-		let size =
-			product.product_sizes.length > 0
-				? product.product_sizes.find((c) => c.id === variant.sizeId)
-				: null;
-
-		let stock = variant.stock;
-		let variantData = {
-			size: size?.name,
-			stock: stock,
+		const data = {
+			id: product.id,
+			name: product.name,
+			description: product.description,
+			price: product.price,
+			freeShipping: product.freeShipping,
+			published: product.published,
+			featured: product.featured,
+			averageRating: product.averageRating,
+			image: product.image,
+			numberOfReviews: product.numberOfReviews,
+			product_variants: [],
+			images: product.product_pictures,
+			company: product.company,
+			colour: product.colour?.name,
+			variants: [],
+			hexColourCode: product.colour?.hexColourCode,
+			reviews: product.reviews,
+			puffs: product.puffs,
+			nicotineSaltQuantity: product.nicotineSaltQuantity,
+			eLiquidVolume: product.eLiquidVolume,
+			battery: product.battery,
+			nicotine: product.nicotine,
+			multipack: product.multipack,
 		};
-		data.variants.push(variantData);
-	});
 
-	res.status(StatusCodes.OK).json(data);
+		product.product_variants.forEach((variant) => {
+			let size =
+				product.product_sizes.length > 0
+					? product.product_sizes.find((c) => c.id === variant.sizeId)
+					: null;
+
+			let stock = variant.stock;
+			console.log(size);
+			let variantData = {
+				size: size?.name,
+				stock: stock,
+			};
+			data.variants.push(variantData);
+		});
+
+		res.status(StatusCodes.OK).json(data);
+	} catch (error) {
+		console.log(error);
+	}
 };
+
+// const updateProduct = async (req, res) => {
+// 	const {
+// 		editProductId: id,
+// 		variants,
+// 		images,
+// 		company,
+// 		colour,
+// 		hexColourCode,
+// 	} = req.body;
+
+// 	try {
+// 		const product = await Product.findByPk(id, {
+// 			include: [
+// 				// Include your required associations here
+// 			],
+// 		});
+
+// 		if (!product) {
+// 			return res
+// 				.status(StatusCodes.NOT_FOUND)
+// 				.json({ message: 'Product not found' });
+// 		}
+
+// 		// Update the product's basic information
+// 		product.name = req.body.name;
+// 		product.description = req.body.description;
+// 		product.price = req.body.price;
+// 		product.image = req.body.image;
+
+// 		// 1. Check if the Company exists, if not, create a new one
+// 		let existingCompany = await Company.findOne({
+// 			where: { name: company },
+// 		});
+
+// 		if (!existingCompany) {
+// 			existingCompany = await Company.create({ name: company });
+// 		}
+
+// 		// 2. Check if the Colour exists, if not, create a new one
+// 		let existingColour = await Colour.findOne({
+// 			where: { name: colour, hexColourCode },
+// 		});
+
+// 		if (!existingColour) {
+// 			existingColour = await Colour.create({ name: colour, hexColourCode });
+// 		}
+
+// 		// Update the Product with the newly created or existing Company and Colour
+// 		product.companyId = existingCompany.id;
+// 		product.colourId = existingColour.id;
+
+// 		// Create or update variants and keep track of variant IDs
+// 		const variantIds = [];
+
+// 		for (const variantData of variants) {
+// 			if (variantData.id) {
+// 				// If variant ID is provided, update the existing variant
+// 				const existingVariant = await ProductVariant.findByPk(variantData.id);
+
+// 				if (existingVariant) {
+// 					existingVariant.stock = variantData.stock;
+// 					await existingVariant.save();
+// 					variantIds.push(existingVariant.id);
+// 				}
+// 			} else {
+// 				// If variant ID is not provided, create a new variant
+// 				const { size, stock } = variantData;
+// 				if (size !== '') {
+// 					let [createdSize] = await Size.findOrCreate({
+// 						where: { name: size },
+// 					});
+// 					const [createdVariant] = await ProductVariant.findOrCreate({
+// 						where: {
+// 							productId: product.id,
+// 							sizeId: createdSize.id,
+// 						},
+// 						defaults: { stock },
+// 					});
+// 					createdVariant.stock = stock;
+// 					await createdVariant.save();
+// 					variantIds.push(createdVariant.id);
+// 				}
+// 			}
+// 		}
+
+// 		// Remove any variants that were not included in the updated variants
+// 		const variantsToRemove = await ProductVariant.findAll({
+// 			where: {
+// 				productId: product.id,
+// 				id: { [Op.notIn]: variantIds },
+// 			},
+// 		});
+
+// 		for (const variantToRemove of variantsToRemove) {
+// 			await variantToRemove.destroy();
+// 		}
+
+// 		// Add new images to the product
+// 		const updatedPictures = await createPictures(images, product.id);
+// 		await product.setProduct_pictures(updatedPictures);
+// 		await product.save();
+
+// 		res
+// 			.status(StatusCodes.OK)
+// 			.json({ message: 'Product updated successfully', product });
+// 	} catch (error) {
+// 		console.error('Failed to update product:', error);
+// 		res
+// 			.status(StatusCodes.INTERNAL_SERVER_ERROR)
+// 			.json({ message: 'Failed to update product' });
+// 	}
+// };
 
 const updateProduct = async (req, res) => {
 	const {
@@ -241,20 +385,48 @@ const updateProduct = async (req, res) => {
 	const updatedVariants = await createVariants(variants, product.id);
 	const variantIds = updatedVariants.map((variant) => variant.id);
 
-	// Update only the variants that exist
-	await ProductVariant.findAll({
+	// // Sort the updatedVariants array by createdAt in ascending order
+	// const sortedUpdatedVariants = updatedVariants.sort((a, b) => {
+	// 	return new Date(a.createdAt) - new Date(b.createdAt);
+	// });
+
+	// Get the current variants associated with the product
+	const existingVariants = await ProductVariant.findAll({
 		where: {
-			id: variantIds,
+			productId: product.id, // Specify the product ID here
 		},
 	});
 
-	// Remove any variants that were not included in the updated variants
+	// Get the IDs of the existing variants
+	const existingVariantIds = existingVariants.map((variant) => variant.id);
+
+	// Identify the IDs of variants that are no longer included
+	const variantsToRemove = existingVariantIds.filter(
+		(variantId) => !variantIds.includes(variantId)
+	);
+
+	// Remove the variants that should be deleted
 	await ProductVariant.destroy({
 		where: {
-			id: product.id,
-			id: { [Op.notIn]: variantIds },
+			id: variantsToRemove,
 		},
 	});
+
+	// Update only the variants that exist
+	// await ProductVariant.findAll({
+	// 	where: {
+	// 		id: variantIds,
+	// 	},
+	// });
+
+	// // Remove any variants that were not included in the updated variants
+	// await ProductVariant.destroy({
+	// 	where: {
+	// 		id: product.id,
+	// 		id: { [Op.notIn]: variantIds },
+	// 	},
+	// });
+
 	// Add new images to the product
 	const updatedPictures = await createPictures(images, product.id);
 	await product.setProduct_pictures(updatedPictures);
@@ -266,6 +438,7 @@ const updateProduct = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
+	console.log(req.body);
 	const { images, variants, company, colour, hexColourCode } = req.body;
 	delete req.body.variants;
 
@@ -334,8 +507,9 @@ const createProduct = async (req, res) => {
 		await Promise.all(promises);
 		res.status(StatusCodes.CREATED).json(product);
 	} catch (error) {
-		console.error('Failed to create product:', error);
-		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+		console.log(error);
+
+		res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
 			msg: 'Failed to create product',
 		});
 	}
@@ -377,7 +551,13 @@ const publishProduct = async (req, res) => {
 	const id = req.params.id; // Get the value of the "id" parameter from the URL
 
 	try {
-		const product = await Product.findByPk(id);
+		const product = await Product.findByPk(id, {
+			attributes: [
+				'id',
+				'published',
+				// Add other attributes you want to fetch here
+			],
+		});
 		if (!product) {
 			return res
 				.status(StatusCodes.NOT_FOUND)
@@ -401,7 +581,13 @@ const featureProduct = async (req, res) => {
 	const id = req.params.id; // Get the value of the "id" parameter from the URL
 
 	try {
-		const product = await Product.findByPk(id);
+		const product = await Product.findByPk(id, {
+			attributes: [
+				'id',
+				'featured',
+				// Add other attributes you want to fetch here
+			],
+		});
 		if (!product) {
 			return res
 				.status(StatusCodes.NOT_FOUND)
@@ -410,9 +596,9 @@ const featureProduct = async (req, res) => {
 		product.featured = !product.featured; // Toggle the value of the published state
 		await product.save(); // Save the updated product
 		return res.status(StatusCodes.OK).json({
-			message: 'Product published state toggled successfully',
+			message: 'Product featured state toggled successfully',
 			productId: id,
-			published: product.published,
+			featured: product.featured,
 		});
 	} catch (error) {
 		return res
