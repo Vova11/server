@@ -8,6 +8,7 @@ const {
 	deleteProduct,
 	publishProduct,
 	featureProduct,
+  getRandomProducts
 } = require('../controllers/productsController');
 
 const {
@@ -28,6 +29,11 @@ router
 		[authenticateUser, authorizePermissions('admin', 'user')],
 		createProduct
 	);
+
+router
+	.route('/get-random-products')
+	.get(getRandomProducts)
+	
 router
 	.route('/uploadImage')
 	.post([authenticateUser, authorizePermissions('admin', 'user')], uploadImage);

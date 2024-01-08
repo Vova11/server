@@ -1,11 +1,11 @@
 const { Op } = require('sequelize');
-const { db } = require('../db/models');
+const { db } = require('../../db/models');
 const { Product, Colour, ProductVariant, Size, Picture, Review } =
 	db.sequelize.models;
 const cloudinary = require('cloudinary').v2;
-const { createPictures } = require('../helpers/pictureHelper');
-const { createVariants } = require('../helpers/variantHelper');
-const CustomError = require('../errors');
+const { createPictures } = require('../../helpers/pictureHelper');
+const { createVariants } = require('../../helpers/variantHelper');
+const CustomError = require('../../errors');
 const { StatusCodes } = require('http-status-codes');
 
 const getAllProducts = async (req, res) => {

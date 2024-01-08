@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: 'productId',
 				as: 'product',
 				onDelete: 'CASCADE',
+        hooks: true, 
 			});
 		}
 	}

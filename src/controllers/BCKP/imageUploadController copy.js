@@ -1,11 +1,11 @@
-const { db } = require('../db/models');
+const { db } = require('../../db/models');
 const { Picture, Product } = db.sequelize.models;
 
 const cloudinary = require('cloudinary').v2;
 const {
 	uploadSingleImageFunc,
 	uploadMultipleImagesFunc,
-} = require('../config/cloudinary');
+} = require('../../config/cloudinary');
 
 const uploadMultipleImages = async (req, res) => {
 	try {

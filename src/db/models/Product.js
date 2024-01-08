@@ -11,8 +11,9 @@ module.exports = (sequelize, DataTypes) => {
 			// Include the association in Product model
 			Product.hasMany(models.Picture, {
 				foreignKey: 'productId',
-				onDelete: 'CASCADE',
 				as: 'product_pictures',
+        // onDelete: 'CASCADE',
+        // hooks: true, 
 			});
 			Product.hasMany(models.ProductVariant, {
 				foreignKey: 'productId',

@@ -70,6 +70,9 @@ app.use(`${apiVersion}/products`, require('./src/routes/products'));
 app.use(`${apiVersion}/colours`, require('./src/routes/colours'));
 app.use(`${apiVersion}/reviews`, require('./src/routes/reviewRoutes'));
 app.use(`${apiVersion}/orders`, require('./src/routes/orderRoutes'));
+app.use(`${apiVersion}/shipping`, require('./src/routes/shippingRoutes'));
+app.use(`${apiVersion}/companies`, require('./src/routes/companies.js'));
+app.use(`${apiVersion}/contact`, require('./src/routes/contactEmailRoutes.js'));
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 

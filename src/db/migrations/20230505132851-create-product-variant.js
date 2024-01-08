@@ -17,7 +17,7 @@ module.exports = {
 				},
 				onUpdate: 'CASCADE',
 				onDelete: 'CASCADE',
-			},
+      },
 			colourId: {
 				type: Sequelize.INTEGER,
 				references: {
