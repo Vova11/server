@@ -265,7 +265,7 @@ const deleteOrder = async (req, res) => {
 
 const packeta = async (req, res) => {
   const { data } = req.body
-  const apiPassword = '9f1d27c6f56c4755a92ccafce7111291'
+  const apiPassword = process.env.packeta;
 
   try {
     const response = await axios.post(
